@@ -60,6 +60,30 @@ npm run build
 npm run preview
 ```
 
+## Deployment
+
+### GitHub Pages (Automatic)
+
+This project is configured for automatic deployment to GitHub Pages using GitHub Actions.
+
+**Setup Steps:**
+
+1. Go to your GitHub repository settings
+2. Navigate to **Settings > Pages**
+3. Under **Source**, select **GitHub Actions**
+4. Push to the `main` branch to trigger automatic deployment
+
+The app will be available at: `https://rattusking.github.io/Nihonwa/`
+
+**Manual Deployment:**
+
+If you prefer manual deployment, you can build and deploy locally:
+
+```bash
+npm run build
+# Then manually upload the dist/ folder to your hosting service
+```
+
 ## Project Structure
 
 ```
