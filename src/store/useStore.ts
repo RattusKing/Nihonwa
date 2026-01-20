@@ -3,16 +3,23 @@ import { persist } from 'zustand/middleware';
 import type { UserProfile, LevelProgress, JLPTLevel, DifficultySettings, AppSettings } from '../types';
 import type { LessonProgress } from '../types/lesson';
 
+interface UserProgressData {
+  lessonProgress: LessonProgress[];
+  totalXP: number;
+  progress: LevelProgress[];
+}
+
 interface AppState {
   // User
   user: UserProfile | null;
   setUser: (user: UserProfile | null) => void;
 
-  // Progress
+  // Progress (scoped by user ID)
+  userProgress: Record<string, UserProgressData>;
   progress: LevelProgress[];
   updateProgress: (level: JLPTLevel, progress: Partial<LevelProgress>) => void;
 
-  // Lesson Progress & XP
+  // Lesson Progress & XP (scoped by user ID)
   lessonProgress: LessonProgress[];
   updateLessonProgress: (lessonId: string, progress: Partial<LessonProgress>) => void;
   totalXP: number;
@@ -91,45 +98,114 @@ const initialProgress: LevelProgress[] = [
 
 export const useStore = create<AppState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       // User
       user: null,
       setUser: (user) => set({ user }),
 
-      // Progress
-      progress: initialProgress,
-      updateProgress: (level, newProgress) =>
-        set((state) => ({
-          progress: state.progress.map((p) =>
-            p.level === level ? { ...p, ...newProgress } : p
-          ),
-        })),
+      // User Progress Storage
+      userProgress: {},
 
-      // Lesson Progress & XP
-      lessonProgress: [],
+      // Progress (computed from current user)
+      get progress() {
+        const state = get();
+        const userId = state.user?.id;
+        if (!userId) return initialProgress;
+        return state.userProgress[userId]?.progress || initialProgress;
+      },
+      updateProgress: (level, newProgress) =>
+        set((state) => {
+          const userId = state.user?.id;
+          if (!userId) return state;
+
+          const currentUserData = state.userProgress[userId] || {
+            lessonProgress: [],
+            totalXP: 0,
+            progress: initialProgress,
+          };
+
+          return {
+            userProgress: {
+              ...state.userProgress,
+              [userId]: {
+                ...currentUserData,
+                progress: currentUserData.progress.map((p) =>
+                  p.level === level ? { ...p, ...newProgress } : p
+                ),
+              },
+            },
+          };
+        }),
+
+      // Lesson Progress & XP (computed from current user)
+      get lessonProgress() {
+        const state = get();
+        const userId = state.user?.id;
+        if (!userId) return [];
+        return state.userProgress[userId]?.lessonProgress || [];
+      },
       updateLessonProgress: (lessonId, newProgress) =>
         set((state) => {
-          const existing = state.lessonProgress.find((p) => p.lessonId === lessonId);
+          const userId = state.user?.id;
+          if (!userId) return state;
+
+          const currentUserData = state.userProgress[userId] || {
+            lessonProgress: [],
+            totalXP: 0,
+            progress: initialProgress,
+          };
+
+          const existing = currentUserData.lessonProgress.find((p) => p.lessonId === lessonId);
+          let updatedLessonProgress;
+
           if (existing) {
-            return {
-              lessonProgress: state.lessonProgress.map((p) =>
-                p.lessonId === lessonId ? { ...p, ...newProgress } : p
-              ),
-            };
+            updatedLessonProgress = currentUserData.lessonProgress.map((p) =>
+              p.lessonId === lessonId ? { ...p, ...newProgress } : p
+            );
           } else {
-            return {
-              lessonProgress: [
-                ...state.lessonProgress,
-                { lessonId, completed: false, xp: 0, ...newProgress },
-              ],
-            };
+            updatedLessonProgress = [
+              ...currentUserData.lessonProgress,
+              { lessonId, completed: false, xp: 0, ...newProgress },
+            ];
           }
+
+          return {
+            userProgress: {
+              ...state.userProgress,
+              [userId]: {
+                ...currentUserData,
+                lessonProgress: updatedLessonProgress,
+              },
+            },
+          };
         }),
-      totalXP: 0,
+      get totalXP() {
+        const state = get();
+        const userId = state.user?.id;
+        if (!userId) return 0;
+        return state.userProgress[userId]?.totalXP || 0;
+      },
       addXP: (amount) =>
-        set((state) => ({
-          totalXP: state.totalXP + amount,
-        })),
+        set((state) => {
+          const userId = state.user?.id;
+          if (!userId) return state;
+
+          const currentUserData = state.userProgress[userId] || {
+            lessonProgress: [],
+            totalXP: 0,
+            progress: initialProgress,
+          };
+
+          return {
+            userProgress: {
+              ...state.userProgress,
+              [userId]: {
+                ...currentUserData,
+                totalXP: currentUserData.totalXP + amount,
+              },
+            },
+          };
+        }),
 
       // Difficulty Settings
       difficultySettings: defaultDifficultySettings,

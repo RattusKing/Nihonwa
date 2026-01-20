@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { Exercise } from '../../types/lesson';
+import { toRomaji } from '../../utils/romaji';
 
 interface MultipleChoiceExerciseProps {
   exercise: Exercise;
@@ -44,11 +45,14 @@ export default function MultipleChoiceExercise({ exercise, onAnswer }: MultipleC
               <div className="text-5xl font-bold text-gray-900 mb-3">
                 {exercise.vocab.word}
               </div>
-              <div className="text-2xl text-n4 font-medium mb-2">
+              <div className="text-2xl text-n4 font-medium mb-1">
                 {exercise.vocab.reading}
               </div>
+              <div className="text-lg text-gray-600 mb-2">
+                ({toRomaji(exercise.vocab.reading)})
+              </div>
               <div className="text-sm text-gray-500">
-                ({exercise.vocab.partOfSpeech})
+                {exercise.vocab.partOfSpeech}
               </div>
             </>
           )}
@@ -102,8 +106,11 @@ export default function MultipleChoiceExercise({ exercise, onAnswer }: MultipleC
               <div className="text-2xl font-bold text-gray-900 mb-1">
                 {exercise.vocab.word}
               </div>
-              <div className="text-lg text-n4 font-medium mb-1">
+              <div className="text-lg text-n4 font-medium">
                 {exercise.vocab.reading}
+              </div>
+              <div className="text-md text-gray-600 mb-2">
+                ({toRomaji(exercise.vocab.reading)})
               </div>
               <div className="text-gray-700">
                 <strong>Meaning:</strong> {exercise.vocab.meaning}

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { Exercise } from '../../types/lesson';
+import { toRomaji } from '../../utils/romaji';
 
 interface TypeAnswerExerciseProps {
   exercise: Exercise;
@@ -114,8 +115,11 @@ export default function TypeAnswerExercise({ exercise, onAnswer }: TypeAnswerExe
                 <div className="text-3xl font-bold text-gray-900 mb-2">
                   {exercise.vocab.word}
                 </div>
-                <div className="text-xl text-n4 font-medium mb-2">
+                <div className="text-xl text-n4 font-medium">
                   Correct reading: {exercise.correctAnswer}
+                </div>
+                <div className="text-lg text-gray-600 mb-2">
+                  ({toRomaji(exercise.correctAnswer)})
                 </div>
                 <div className="text-gray-700">
                   <strong>Meaning:</strong> {exercise.vocab.meaning}

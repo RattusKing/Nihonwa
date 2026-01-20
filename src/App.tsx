@@ -16,7 +16,7 @@ import Progress from './pages/Progress';
 import Settings from './pages/Settings';
 
 function App() {
-  const { user, showLevelSelector, setShowLevelSelector } = useStore();
+  const { user, showLevelSelector, setShowLevelSelector, appSettings } = useStore();
 
   useEffect(() => {
     // If user exists, don't show level selector
@@ -24,6 +24,15 @@ function App() {
       setShowLevelSelector(false);
     }
   }, [user, setShowLevelSelector]);
+
+  useEffect(() => {
+    // Apply theme to document
+    if (appSettings.theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [appSettings.theme]);
 
   useEffect(() => {
     // Initialize IndexedDB, seed sample content, and load vocabulary

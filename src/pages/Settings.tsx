@@ -27,7 +27,7 @@ export default function Settings() {
 
       {/* Current Level */}
       <div className="card">
-        <h2 className="text-xl font-bold text-gray-800 mb-4">Current Level</h2>
+        <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">Current Level</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3">
           {JLPT_LEVELS.map((level) => {
             const info = JLPT_LEVEL_INFO[level];
