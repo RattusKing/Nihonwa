@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { UserProfile, LevelProgress, JLPTLevel, DifficultySettings, AppSettings } from '../types';
+import type { LessonProgress } from '../types/lesson';
 
 interface AppState {
   // User
@@ -10,6 +11,12 @@ interface AppState {
   // Progress
   progress: LevelProgress[];
   updateProgress: (level: JLPTLevel, progress: Partial<LevelProgress>) => void;
+
+  // Lesson Progress & XP
+  lessonProgress: LessonProgress[];
+  updateLessonProgress: (lessonId: string, progress: Partial<LessonProgress>) => void;
+  totalXP: number;
+  addXP: (amount: number) => void;
 
   // Difficulty Settings
   difficultySettings: DifficultySettings;
@@ -96,6 +103,32 @@ export const useStore = create<AppState>()(
           progress: state.progress.map((p) =>
             p.level === level ? { ...p, ...newProgress } : p
           ),
+        })),
+
+      // Lesson Progress & XP
+      lessonProgress: [],
+      updateLessonProgress: (lessonId, newProgress) =>
+        set((state) => {
+          const existing = state.lessonProgress.find((p) => p.lessonId === lessonId);
+          if (existing) {
+            return {
+              lessonProgress: state.lessonProgress.map((p) =>
+                p.lessonId === lessonId ? { ...p, ...newProgress } : p
+              ),
+            };
+          } else {
+            return {
+              lessonProgress: [
+                ...state.lessonProgress,
+                { lessonId, completed: false, xp: 0, ...newProgress },
+              ],
+            };
+          }
+        }),
+      totalXP: 0,
+      addXP: (amount) =>
+        set((state) => ({
+          totalXP: state.totalXP + amount,
         })),
 
       // Difficulty Settings
