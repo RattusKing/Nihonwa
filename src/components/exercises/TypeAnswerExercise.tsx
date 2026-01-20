@@ -56,8 +56,11 @@ export default function TypeAnswerExercise({ exercise, onAnswer }: TypeAnswerExe
           <h2 className="text-2xl font-bold text-gray-800 mb-4">
             {exercise.question}
           </h2>
-          <div className="text-5xl font-bold text-n4 mb-4">
+          <div className="text-5xl font-bold text-gray-900 mb-3">
             {exercise.vocab.word}
+          </div>
+          <div className="text-sm text-gray-500">
+            ({exercise.vocab.meaning} - {exercise.vocab.partOfSpeech})
           </div>
         </div>
 
@@ -98,19 +101,27 @@ export default function TypeAnswerExercise({ exercise, onAnswer }: TypeAnswerExe
             </div>
           </form>
         ) : (
-          <div className={`p-6 rounded-lg text-center ${
-            isCorrect ? 'bg-green-50' : 'bg-red-50'
+          <div className={`p-6 rounded-lg ${
+            isCorrect ? 'bg-green-50 border-2 border-green-500' : 'bg-red-50 border-2 border-red-500'
           }`}>
-            <div className={`text-2xl font-bold mb-2 ${
+            <div className={`text-2xl font-bold mb-4 text-center ${
               isCorrect ? 'text-green-700' : 'text-red-700'
             }`}>
               {isCorrect ? '🎉 Perfect!' : '❌ Not quite'}
             </div>
-            {!isCorrect && (
-              <div className="text-gray-700">
-                Correct answer: <span className="font-bold text-xl">{exercise.correctAnswer}</span>
+            <div className="bg-white p-4 rounded-lg">
+              <div className="text-center mb-3">
+                <div className="text-3xl font-bold text-gray-900 mb-2">
+                  {exercise.vocab.word}
+                </div>
+                <div className="text-xl text-n4 font-medium mb-2">
+                  Correct reading: {exercise.correctAnswer}
+                </div>
+                <div className="text-gray-700">
+                  <strong>Meaning:</strong> {exercise.vocab.meaning}
+                </div>
               </div>
-            )}
+            </div>
           </div>
         )}
 

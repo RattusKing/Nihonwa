@@ -16,7 +16,14 @@ import Progress from './pages/Progress';
 import Settings from './pages/Settings';
 
 function App() {
-  const { user, showLevelSelector } = useStore();
+  const { user, showLevelSelector, setShowLevelSelector } = useStore();
+
+  useEffect(() => {
+    // If user exists, don't show level selector
+    if (user) {
+      setShowLevelSelector(false);
+    }
+  }, [user, setShowLevelSelector]);
 
   useEffect(() => {
     // Initialize IndexedDB, seed sample content, and load vocabulary

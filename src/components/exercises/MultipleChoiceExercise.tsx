@@ -40,9 +40,17 @@ export default function MultipleChoiceExercise({ exercise, onAnswer }: MultipleC
             {exercise.question}
           </h2>
           {exercise.type === 'multiple-choice-jp' && (
-            <div className="text-4xl font-bold text-n4 mb-2">
-              {exercise.vocab.word}
-            </div>
+            <>
+              <div className="text-5xl font-bold text-gray-900 mb-3">
+                {exercise.vocab.word}
+              </div>
+              <div className="text-2xl text-n4 font-medium mb-2">
+                {exercise.vocab.reading}
+              </div>
+              <div className="text-sm text-gray-500">
+                ({exercise.vocab.partOfSpeech})
+              </div>
+            </>
           )}
         </div>
 
@@ -85,16 +93,22 @@ export default function MultipleChoiceExercise({ exercise, onAnswer }: MultipleC
         {/* Feedback */}
         {showFeedback && (
           <div className={`mt-6 p-4 rounded-lg ${
-            isCorrect ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
+            isCorrect ? 'bg-green-50 border-2 border-green-500' : 'bg-red-50 border-2 border-red-500'
           }`}>
-            <div className="font-semibold mb-1">
-              {isCorrect ? '🎉 Correct!' : '❌ Incorrect'}
+            <div className={`font-bold text-xl mb-2 ${isCorrect ? 'text-green-700' : 'text-red-700'}`}>
+              {isCorrect ? '🎉 Perfect!' : '❌ Not Quite'}
             </div>
-            {!isCorrect && (
-              <div className="text-sm">
-                The correct answer is: <strong>{exercise.correctAnswer}</strong>
+            <div className="bg-white p-3 rounded-lg">
+              <div className="text-2xl font-bold text-gray-900 mb-1">
+                {exercise.vocab.word}
               </div>
-            )}
+              <div className="text-lg text-n4 font-medium mb-1">
+                {exercise.vocab.reading}
+              </div>
+              <div className="text-gray-700">
+                <strong>Meaning:</strong> {exercise.vocab.meaning}
+              </div>
+            </div>
           </div>
         )}
       </div>
