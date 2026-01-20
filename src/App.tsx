@@ -19,11 +19,13 @@ function App() {
   const { user, showLevelSelector } = useStore();
 
   useEffect(() => {
-    // Initialize IndexedDB and seed sample content
+    // Initialize IndexedDB, seed sample content, and load vocabulary
     const initialize = async () => {
       await initDB();
       const { seedSampleContent } = await import('./data/sampleContent');
       await seedSampleContent();
+      const { loadAllVocabulary } = await import('./data/vocabulary/vocabularyLoader');
+      await loadAllVocabulary();
     };
     initialize().catch(console.error);
   }, []);
