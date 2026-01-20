@@ -5,7 +5,7 @@ import { initDB } from './utils/db';
 import Layout from './components/Layout';
 import LevelSelector from './components/LevelSelector';
 import Dashboard from './pages/Dashboard';
-import Vocabulary from './pages/Vocabulary';
+import VocabularyNew from './pages/VocabularyNew';
 import Kanji from './pages/Kanji';
 import Grammar from './pages/Grammar';
 import Reading from './pages/Reading';
@@ -38,7 +38,7 @@ function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/vocabulary" element={<Vocabulary />} />
+            <Route path="/vocabulary" element={<VocabularyNew />} />
             <Route path="/kanji" element={<Kanji />} />
             <Route path="/grammar" element={<Grammar />} />
             <Route path="/reading" element={<Reading />} />
