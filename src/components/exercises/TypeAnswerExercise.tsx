@@ -51,16 +51,16 @@ export default function TypeAnswerExercise({ exercise, onAnswer }: TypeAnswerExe
       <div className="card">
         {/* Question */}
         <div className="mb-8 text-center">
-          <div className="text-sm text-gray-500 mb-2 uppercase tracking-wide">
+          <div className="text-sm text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wide">
             Type the Answer
           </div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">
             {exercise.question}
           </h2>
-          <div className="text-5xl font-bold text-gray-900 mb-3">
+          <div className="text-5xl font-bold text-gray-900 dark:text-gray-100 mb-3">
             {exercise.vocab.word}
           </div>
-          <div className="text-sm text-gray-500">
+          <div className="text-sm text-gray-500 dark:text-gray-400">
             ({exercise.vocab.meaning} - {exercise.vocab.partOfSpeech})
           </div>
         </div>
@@ -73,7 +73,7 @@ export default function TypeAnswerExercise({ exercise, onAnswer }: TypeAnswerExe
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
               placeholder="Type your answer..."
-              className="w-full px-6 py-4 text-xl border-2 border-gray-300 rounded-lg focus:border-n4 focus:ring-2 focus:ring-n4 focus:outline-none"
+              className="w-full px-6 py-4 text-xl border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:border-n4 focus:ring-2 focus:ring-n4 focus:outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               autoFocus
             />
 
@@ -103,25 +103,25 @@ export default function TypeAnswerExercise({ exercise, onAnswer }: TypeAnswerExe
           </form>
         ) : (
           <div className={`p-6 rounded-lg ${
-            isCorrect ? 'bg-green-50 border-2 border-green-500' : 'bg-red-50 border-2 border-red-500'
+            isCorrect ? 'bg-green-50 dark:bg-green-900 border-2 border-green-500' : 'bg-red-50 dark:bg-red-900 border-2 border-red-500'
           }`}>
             <div className={`text-2xl font-bold mb-4 text-center ${
-              isCorrect ? 'text-green-700' : 'text-red-700'
+              isCorrect ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'
             }`}>
               {isCorrect ? '🎉 Perfect!' : '❌ Not quite'}
             </div>
-            <div className="bg-white p-4 rounded-lg">
+            <div className="bg-white dark:bg-gray-800 p-4 rounded-lg">
               <div className="text-center mb-3">
-                <div className="text-3xl font-bold text-gray-900 mb-2">
+                <div className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
                   {exercise.vocab.word}
                 </div>
                 <div className="text-xl text-n4 font-medium">
                   Correct reading: {exercise.correctAnswer}
                 </div>
-                <div className="text-lg text-gray-600 mb-2">
+                <div className="text-lg text-gray-600 dark:text-gray-400 mb-2">
                   ({toRomaji(exercise.correctAnswer)})
                 </div>
-                <div className="text-gray-700">
+                <div className="text-gray-700 dark:text-gray-300">
                   <strong>Meaning:</strong> {exercise.vocab.meaning}
                 </div>
               </div>

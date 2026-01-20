@@ -56,31 +56,31 @@ export default function Dashboard() {
           <div className="text-3xl font-bold text-n5">
             {currentProgress?.vocabularyMastered || 0}
           </div>
-          <div className="text-gray-700 font-medium">Vocabulary Mastered</div>
+          <div className="text-gray-700 dark:text-gray-300 font-medium">Vocabulary Mastered</div>
         </div>
         <div className="card bg-n4 bg-opacity-10 border-2 border-n4">
           <div className="text-3xl font-bold text-n4">
             {currentProgress?.kanjiMastered || 0}
           </div>
-          <div className="text-gray-700 font-medium">Kanji Learned</div>
+          <div className="text-gray-700 dark:text-gray-300 font-medium">Kanji Learned</div>
         </div>
         <div className="card bg-n3 bg-opacity-10 border-2 border-n3">
           <div className="text-3xl font-bold text-n3">
             {currentProgress?.grammarPatternsMastered || 0}
           </div>
-          <div className="text-gray-700 font-medium">Grammar Patterns</div>
+          <div className="text-gray-700 dark:text-gray-300 font-medium">Grammar Patterns</div>
         </div>
         <div className="card bg-n2 bg-opacity-10 border-2 border-n2">
           <div className="text-3xl font-bold text-n2">
             {currentProgress?.articlesRead || 0}
           </div>
-          <div className="text-gray-700 font-medium">Articles Read</div>
+          <div className="text-gray-700 dark:text-gray-300 font-medium">Articles Read</div>
         </div>
       </div>
 
       {/* Learning Modes */}
       <div>
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Learning Modes</h2>
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">Learning Modes</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {learningModes.map((mode) => (
             <Link
@@ -91,8 +91,8 @@ export default function Dashboard() {
               <div className={`${mode.color} text-white w-12 h-12 rounded-lg flex items-center justify-center text-2xl mb-4`}>
                 {mode.icon}
               </div>
-              <h3 className="font-semibold text-gray-800 mb-2">{mode.title}</h3>
-              <p className="text-sm text-gray-600">{mode.description}</p>
+              <h3 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">{mode.title}</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">{mode.description}</p>
             </Link>
           ))}
         </div>
@@ -117,11 +117,11 @@ export default function Dashboard() {
       </div>
 
       {/* Content Manager Access (Admin) */}
-      <div className="card border-2 border-dashed border-gray-300">
+      <div className="card border-2 border-dashed border-gray-300 dark:border-gray-600">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="font-semibold text-gray-800 mb-1">Content Manager</h3>
-            <p className="text-sm text-gray-600">Add and manage learning content</p>
+            <h3 className="font-semibold text-gray-800 dark:text-gray-100 mb-1">Content Manager</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400">Add and manage learning content</p>
           </div>
           <Link
             to="/content-manager"

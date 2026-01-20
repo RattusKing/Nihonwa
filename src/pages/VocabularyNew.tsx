@@ -81,8 +81,8 @@ export default function VocabularyNew() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Vocabulary Lessons</h1>
-          <p className="text-gray-600">Master {user?.currentLevel} vocabulary step by step</p>
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2">Vocabulary Lessons</h1>
+          <p className="text-gray-600 dark:text-gray-400">Master {user?.currentLevel} vocabulary step by step</p>
         </div>
 
         {/* XP Display */}
@@ -96,23 +96,23 @@ export default function VocabularyNew() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="card bg-n5 bg-opacity-10 border-2 border-n5">
           <div className="text-3xl font-bold text-n5">{lessons.length}</div>
-          <div className="text-gray-700 text-sm">Total Lessons</div>
+          <div className="text-gray-700 dark:text-gray-300 text-sm">Total Lessons</div>
         </div>
         <div className="card bg-n4 bg-opacity-10 border-2 border-n4">
           <div className="text-3xl font-bold text-n4">
             {lessonProgress.filter((p) => p.completed).length}
           </div>
-          <div className="text-gray-700 text-sm">Completed</div>
+          <div className="text-gray-700 dark:text-gray-300 text-sm">Completed</div>
         </div>
         <div className="card bg-n3 bg-opacity-10 border-2 border-n3">
           <div className="text-3xl font-bold text-n3">{vocabulary.length}</div>
-          <div className="text-gray-700 text-sm">Total Words</div>
+          <div className="text-gray-700 dark:text-gray-300 text-sm">Total Words</div>
         </div>
       </div>
 
       {/* Lessons Grid */}
       <div>
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Choose a Lesson</h2>
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">Choose a Lesson</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {lessons.map((lesson) => {
@@ -149,15 +149,15 @@ export default function VocabularyNew() {
                 </div>
 
                 {/* Title & Description */}
-                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">
                   {lesson.title}
                 </h3>
-                <p className="text-sm text-gray-600 mb-4">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
                   {lesson.description}
                 </p>
 
                 {/* Vocabulary Count */}
-                <div className="flex items-center gap-2 text-sm text-gray-500">
+                <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
                   <span>📝</span>
                   <span>{lesson.vocabularyIds.length} words</span>
                 </div>
@@ -197,9 +197,9 @@ export default function VocabularyNew() {
       </div>
 
       {/* How it Works */}
-      <div className="card bg-gradient-to-r from-blue-50 to-purple-50">
-        <h3 className="text-lg font-bold text-gray-800 mb-3">🎓 How Lessons Work</h3>
-        <ul className="space-y-2 text-sm text-gray-700">
+      <div className="card bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900 dark:to-purple-900">
+        <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-3">🎓 How Lessons Work</h3>
+        <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
           <li className="flex items-start gap-2">
             <span>✓</span>
             <span>Complete lessons in order to unlock the next one</span>

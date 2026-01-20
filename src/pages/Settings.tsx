@@ -21,8 +21,8 @@ export default function Settings() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">Settings</h1>
-        <p className="text-gray-600">Customize your learning experience</p>
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2">Settings</h1>
+        <p className="text-gray-600 dark:text-gray-400">Customize your learning experience</p>
       </div>
 
       {/* Current Level */}
@@ -46,7 +46,7 @@ export default function Settings() {
                 <span className={`badge-${level.toLowerCase()} mb-2 inline-block`}>
                   {level}
                 </span>
-                <div className="text-sm font-medium text-gray-800">{info.name}</div>
+                <div className="text-sm font-medium text-gray-800 dark:text-gray-100">{info.name}</div>
               </button>
             );
           })}
@@ -55,13 +55,13 @@ export default function Settings() {
 
       {/* App Settings */}
       <div className="card">
-        <h2 className="text-xl font-bold text-gray-800 mb-4">App Settings</h2>
+        <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">App Settings</h2>
 
         <div className="space-y-4">
-          <div className="flex items-center justify-between py-3 border-b border-gray-200">
+          <div className="flex items-center justify-between py-3 border-b border-gray-200 dark:border-gray-700">
             <div>
-              <div className="font-medium text-gray-800">Theme</div>
-              <div className="text-sm text-gray-600">Choose your preferred theme</div>
+              <div className="font-medium text-gray-800 dark:text-gray-100">Theme</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Choose your preferred theme</div>
             </div>
             <select
               value={appSettings.theme}
@@ -74,10 +74,10 @@ export default function Settings() {
             </select>
           </div>
 
-          <div className="flex items-center justify-between py-3 border-b border-gray-200">
+          <div className="flex items-center justify-between py-3 border-b border-gray-200 dark:border-gray-700">
             <div>
-              <div className="font-medium text-gray-800">Offline Mode</div>
-              <div className="text-sm text-gray-600">Save content for offline access</div>
+              <div className="font-medium text-gray-800 dark:text-gray-100">Offline Mode</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Save content for offline access</div>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
               <input
@@ -92,8 +92,8 @@ export default function Settings() {
 
           <div className="flex items-center justify-between py-3">
             <div>
-              <div className="font-medium text-gray-800">Data Sync</div>
-              <div className="text-sm text-gray-600">Sync progress across devices</div>
+              <div className="font-medium text-gray-800 dark:text-gray-100">Data Sync</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Sync progress across devices</div>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
               <input
@@ -110,13 +110,13 @@ export default function Settings() {
 
       {/* About */}
       <div className="card">
-        <h2 className="text-xl font-bold text-gray-800 mb-4">About Nihonwa</h2>
-        <div className="space-y-2 text-gray-600">
+        <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">About Nihonwa</h2>
+        <div className="space-y-2 text-gray-600 dark:text-gray-400">
           <p>
-            <strong className="text-gray-800">Version:</strong> 0.1.0
+            <strong className="text-gray-800 dark:text-gray-100">Version:</strong> 0.1.0
           </p>
           <p>
-            <strong className="text-gray-800">Description:</strong> Fully immersive Japanese learning experience from N5 to N1
+            <strong className="text-gray-800 dark:text-gray-100">Description:</strong> Fully immersive Japanese learning experience from N5 to N1
           </p>
           <p className="text-sm mt-4">
             Nihonwa is a self-paced, no-pressure learning platform designed to help you master Japanese through real-world content and interactive tools.
