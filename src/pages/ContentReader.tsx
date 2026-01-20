@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useStore } from '../store/useStore';
 import { getAllContent } from '../utils/db';
 import type { Content } from '../types';
+import { toRomaji } from '../utils/romaji';
 
 export default function ContentReader() {
   const { id } = useParams<{ id: string }>();
@@ -149,6 +150,7 @@ export default function ContentReader() {
                   <div>
                     <span className="text-lg font-bold text-gray-800">{vocab.word}</span>
                     <span className="text-sm text-gray-600 ml-2">{vocab.reading}</span>
+                    <span className="text-xs text-gray-500 ml-2">({toRomaji(vocab.reading)})</span>
                   </div>
                   <span className={`badge-${vocab.level.toLowerCase()} text-xs`}>
                     {vocab.level}

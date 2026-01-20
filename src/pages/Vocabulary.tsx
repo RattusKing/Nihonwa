@@ -4,6 +4,7 @@ import { getVocabularyByLevel, updateVocabulary } from '../utils/db';
 import { calculateNextReview, getQualityFromResponse, isDue } from '../utils/srs';
 import Flashcard from '../components/Flashcard';
 import type { VocabularyItem } from '../types';
+import { toRomaji } from '../utils/romaji';
 
 export default function Vocabulary() {
   const { user } = useStore();
@@ -213,7 +214,8 @@ export default function Vocabulary() {
                   {vocab.mastered && <span className="text-green-500">✓</span>}
                 </div>
                 <div className="text-2xl font-bold text-gray-800 mb-1">{vocab.word}</div>
-                <div className="text-sm text-gray-600 mb-2">{vocab.reading}</div>
+                <div className="text-sm text-gray-600 mb-1">{vocab.reading}</div>
+                <div className="text-xs text-gray-500 mb-2">({toRomaji(vocab.reading)})</div>
                 <div className="text-gray-700 mb-2">{vocab.meaning}</div>
                 <div className="text-xs text-gray-500">{vocab.partOfSpeech}</div>
                 {vocab.nextReview && (

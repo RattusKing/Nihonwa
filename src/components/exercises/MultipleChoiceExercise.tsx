@@ -34,24 +34,24 @@ export default function MultipleChoiceExercise({ exercise, onAnswer }: MultipleC
       <div className="card">
         {/* Question */}
         <div className="mb-8 text-center">
-          <div className="text-sm text-gray-500 mb-2 uppercase tracking-wide">
+          <div className="text-sm text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wide">
             {exercise.type === 'multiple-choice-jp' ? 'Japanese → English' : 'English → Japanese'}
           </div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">
             {exercise.question}
           </h2>
           {exercise.type === 'multiple-choice-jp' && (
             <>
-              <div className="text-5xl font-bold text-gray-900 mb-3">
+              <div className="text-5xl font-bold text-gray-900 dark:text-gray-100 mb-3">
                 {exercise.vocab.word}
               </div>
               <div className="text-2xl text-n4 font-medium mb-1">
                 {exercise.vocab.reading}
               </div>
-              <div className="text-lg text-gray-600 mb-2">
+              <div className="text-lg text-gray-600 dark:text-gray-400 mb-2">
                 ({toRomaji(exercise.vocab.reading)})
               </div>
-              <div className="text-sm text-gray-500">
+              <div className="text-sm text-gray-500 dark:text-gray-400">
                 {exercise.vocab.partOfSpeech}
               </div>
             </>
@@ -64,13 +64,13 @@ export default function MultipleChoiceExercise({ exercise, onAnswer }: MultipleC
             const isSelected = selected === option;
             const isCorrectOption = option === exercise.correctAnswer;
 
-            let bgColor = 'bg-white hover:bg-gray-50 border-gray-300';
+            let bgColor = 'bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 border-gray-300 dark:border-gray-600';
             if (showFeedback && isSelected) {
               bgColor = isCorrect
-                ? 'bg-green-100 border-green-500'
-                : 'bg-red-100 border-red-500';
+                ? 'bg-green-100 dark:bg-green-900 border-green-500'
+                : 'bg-red-100 dark:bg-red-900 border-red-500';
             } else if (showFeedback && isCorrectOption) {
-              bgColor = 'bg-green-100 border-green-500';
+              bgColor = 'bg-green-100 dark:bg-green-900 border-green-500';
             }
 
             return (
@@ -82,7 +82,7 @@ export default function MultipleChoiceExercise({ exercise, onAnswer }: MultipleC
                   showFeedback ? 'cursor-default' : 'cursor-pointer'
                 }`}
               >
-                <span className="text-gray-700">{option}</span>
+                <span className="text-gray-700 dark:text-gray-200">{option}</span>
                 {showFeedback && isCorrectOption && (
                   <span className="ml-2 text-green-600">✓</span>
                 )}
@@ -97,22 +97,22 @@ export default function MultipleChoiceExercise({ exercise, onAnswer }: MultipleC
         {/* Feedback */}
         {showFeedback && (
           <div className={`mt-6 p-4 rounded-lg ${
-            isCorrect ? 'bg-green-50 border-2 border-green-500' : 'bg-red-50 border-2 border-red-500'
+            isCorrect ? 'bg-green-50 dark:bg-green-900 border-2 border-green-500' : 'bg-red-50 dark:bg-red-900 border-2 border-red-500'
           }`}>
-            <div className={`font-bold text-xl mb-2 ${isCorrect ? 'text-green-700' : 'text-red-700'}`}>
+            <div className={`font-bold text-xl mb-2 ${isCorrect ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'}`}>
               {isCorrect ? '🎉 Perfect!' : '❌ Not Quite'}
             </div>
-            <div className="bg-white p-3 rounded-lg">
-              <div className="text-2xl font-bold text-gray-900 mb-1">
+            <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
+              <div className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-1">
                 {exercise.vocab.word}
               </div>
               <div className="text-lg text-n4 font-medium">
                 {exercise.vocab.reading}
               </div>
-              <div className="text-md text-gray-600 mb-2">
+              <div className="text-md text-gray-600 dark:text-gray-400 mb-2">
                 ({toRomaji(exercise.vocab.reading)})
               </div>
-              <div className="text-gray-700">
+              <div className="text-gray-700 dark:text-gray-300">
                 <strong>Meaning:</strong> {exercise.vocab.meaning}
               </div>
             </div>
