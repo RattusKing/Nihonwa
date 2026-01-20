@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { VocabularyItem } from '../types';
+import { toRomaji } from '../utils/romaji';
 
 interface FlashcardProps {
   vocab: VocabularyItem;
@@ -54,6 +55,9 @@ export default function Flashcard({ vocab, onCorrect, onIncorrect, onSkip }: Fla
               <div className="text-xl text-white opacity-90">
                 {vocab.reading}
               </div>
+              <div className="text-md text-white opacity-75 mb-2">
+                ({toRomaji(vocab.reading)})
+              </div>
               <div className="mt-6 text-sm text-white opacity-75">
                 Click to reveal meaning
               </div>
@@ -70,8 +74,11 @@ export default function Flashcard({ vocab, onCorrect, onIncorrect, onSkip }: Fla
                 <div className="text-4xl font-bold text-gray-800 mb-2">
                   {vocab.word}
                 </div>
-                <div className="text-xl text-gray-600 mb-4">
+                <div className="text-xl text-gray-600 mb-1">
                   {vocab.reading}
+                </div>
+                <div className="text-md text-gray-500 mb-4">
+                  ({toRomaji(vocab.reading)})
                 </div>
                 <div className="text-2xl text-n4 font-semibold mb-4">
                   {vocab.meaning}
