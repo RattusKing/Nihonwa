@@ -1,0 +1,55 @@
+import { useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { useStore } from './store/useStore';
+import { initDB } from './utils/db';
+import Layout from './components/Layout';
+import LevelSelector from './components/LevelSelector';
+import Dashboard from './pages/Dashboard';
+import Vocabulary from './pages/Vocabulary';
+import Kanji from './pages/Kanji';
+import Grammar from './pages/Grammar';
+import Reading from './pages/Reading';
+import ImmersionZone from './pages/ImmersionZone';
+import ContentReader from './pages/ContentReader';
+import ContentManager from './pages/ContentManager';
+import Progress from './pages/Progress';
+import Settings from './pages/Settings';
+
+function App() {
+  const { user, showLevelSelector } = useStore();
+
+  useEffect(() => {
+    // Initialize IndexedDB and seed sample content
+    const initialize = async () => {
+      await initDB();
+      const { seedSampleContent } = await import('./data/sampleContent');
+      await seedSampleContent();
+    };
+    initialize().catch(console.error);
+  }, []);
+
+  return (
+    <>
+      {!user || showLevelSelector ? (
+        <LevelSelector />
+      ) : (
+        <Layout>
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/vocabulary" element={<Vocabulary />} />
+            <Route path="/kanji" element={<Kanji />} />
+            <Route path="/grammar" element={<Grammar />} />
+            <Route path="/reading" element={<Reading />} />
+            <Route path="/immersion" element={<ImmersionZone />} />
+            <Route path="/content/:id" element={<ContentReader />} />
+            <Route path="/content-manager" element={<ContentManager />} />
+            <Route path="/progress" element={<Progress />} />
+            <Route path="/settings" element={<Settings />} />
+          </Routes>
+        </Layout>
+      )}
+    </>
+  );
+}
+
+export default App;
