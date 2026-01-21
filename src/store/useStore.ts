@@ -19,14 +19,17 @@ interface AppState {
 
   // Progress (scoped by user ID)
   userProgress: Record<string, UserProgressData>;
-  progress: LevelProgress[];
-  updateProgress: (level: JLPTLevel, progress: Partial<LevelProgress>) => void;
 
-  // Lesson Progress & XP (scoped by user ID)
+  // Current user's cached progress (for reactivity)
+  progress: LevelProgress[];
   lessonProgress: LessonProgress[];
-  updateLessonProgress: (lessonId: string, progress: Partial<LessonProgress>) => void;
   totalXP: number;
+
+  // Update functions
+  updateProgress: (level: JLPTLevel, progress: Partial<LevelProgress>) => void;
+  updateLessonProgress: (lessonId: string, progress: Partial<LessonProgress>) => void;
   addXP: (amount: number) => void;
+  syncCurrentUserProgress: () => void;
 
   // Difficulty Settings
   difficultySettings: DifficultySettings;
@@ -101,81 +104,101 @@ const initialProgress: LevelProgress[] = [
 
 export const useStore = create<AppState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       // User & Profiles
       user: null,
       allProfiles: [],
+
       setUser: (user) => {
         if (user) {
-          // Update lastActive when switching profiles
           const updatedProfile = { ...user, lastActive: new Date() };
           set((state) => {
-            // Check if profile exists in allProfiles
             const profileExists = state.allProfiles.some(p => p.id === user.id);
 
-            console.log('setUser called:', {
+            // Get user's progress
+            const userData = state.userProgress[user.id] || {
+              lessonProgress: [],
+              totalXP: 0,
+              progress: [...initialProgress],
+            };
+
+            console.log('setUser - loading progress:', {
               userId: user.id,
-              userName: user.name,
-              profileExists,
-              currentProfileCount: state.allProfiles.length,
+              totalXP: userData.totalXP,
+              lessonCount: userData.lessonProgress.length,
             });
 
-            const newState = {
+            return {
               user: updatedProfile,
               allProfiles: profileExists
                 ? state.allProfiles.map(p => p.id === user.id ? updatedProfile : p)
                 : [...state.allProfiles, updatedProfile],
+              // Sync current user's cached progress
+              progress: userData.progress,
+              lessonProgress: userData.lessonProgress,
+              totalXP: userData.totalXP,
             };
-
-            console.log('New state after setUser:', {
-              profileCount: newState.allProfiles.length,
-              profiles: newState.allProfiles.map(p => ({ id: p.id, name: p.name })),
-            });
-
-            return newState;
           });
         } else {
-          console.log('setUser called with null');
-          set({ user });
+          set({
+            user: null,
+            progress: [...initialProgress],
+            lessonProgress: [],
+            totalXP: 0,
+          });
         }
       },
+
       createProfile: (profile) =>
         set((state) => {
-          console.log('createProfile called:', {
-            profileId: profile.id,
-            profileName: profile.name,
-            currentProfileCount: state.allProfiles.length,
-          });
-
-          const newState = {
+          console.log('createProfile:', profile.name);
+          return {
             allProfiles: [...state.allProfiles, profile],
           };
-
-          console.log('New profile count after createProfile:', newState.allProfiles.length);
-
-          return newState;
         }),
+
       deleteProfile: (profileId) =>
         set((state) => ({
           allProfiles: state.allProfiles.filter(p => p.id !== profileId),
           user: state.user?.id === profileId ? null : state.user,
+          progress: state.user?.id === profileId ? [...initialProgress] : state.progress,
+          lessonProgress: state.user?.id === profileId ? [] : state.lessonProgress,
+          totalXP: state.user?.id === profileId ? 0 : state.totalXP,
         })),
 
       // User Progress Storage
       userProgress: {},
 
-      // Progress (computed from current user)
-      get progress() {
-        const state = get();
-        const userId = state.user?.id;
-        if (!userId) return initialProgress;
-        return state.userProgress[userId]?.progress || initialProgress;
+      // Current user's cached progress
+      progress: [...initialProgress],
+      lessonProgress: [],
+      totalXP: 0,
+
+      // Sync function to update cached progress from userProgress
+      syncCurrentUserProgress: () => {
+        set((state) => {
+          const userId = state.user?.id;
+          if (!userId) return {};
+
+          const userData = state.userProgress[userId] || {
+            lessonProgress: [],
+            totalXP: 0,
+            progress: [...initialProgress],
+          };
+
+          return {
+            progress: userData.progress,
+            lessonProgress: userData.lessonProgress,
+            totalXP: userData.totalXP,
+          };
+        });
       },
+
       updateProgress: (level, newProgress) =>
         set((state) => {
           const userId = state.user?.id;
           if (!userId) {
-            console.warn('No user ID found when updating progress');
+            console.warn('No user ID when updating progress');
             return {};
           }
 
@@ -185,31 +208,27 @@ export const useStore = create<AppState>()(
             progress: [...initialProgress],
           };
 
+          const updatedProgress = currentUserData.progress.map((p) =>
+            p.level === level ? { ...p, ...newProgress } : p
+          );
+
           return {
             userProgress: {
               ...state.userProgress,
               [userId]: {
                 ...currentUserData,
-                progress: currentUserData.progress.map((p) =>
-                  p.level === level ? { ...p, ...newProgress } : p
-                ),
+                progress: updatedProgress,
               },
             },
+            progress: updatedProgress, // Update cached value
           };
         }),
 
-      // Lesson Progress & XP (computed from current user)
-      get lessonProgress() {
-        const state = get();
-        const userId = state.user?.id;
-        if (!userId) return [];
-        return state.userProgress[userId]?.lessonProgress || [];
-      },
       updateLessonProgress: (lessonId, newProgress) =>
         set((state) => {
           const userId = state.user?.id;
           if (!userId) {
-            console.warn('No user ID found when updating lesson progress');
+            console.warn('No user ID when updating lesson progress');
             return {};
           }
 
@@ -233,11 +252,11 @@ export const useStore = create<AppState>()(
             ];
           }
 
-          console.log('Updating lesson progress:', {
+          console.log('updateLessonProgress:', {
             userId,
             lessonId,
             newProgress,
-            updatedLessonProgress,
+            totalLessons: updatedLessonProgress.length,
           });
 
           return {
@@ -248,19 +267,15 @@ export const useStore = create<AppState>()(
                 lessonProgress: updatedLessonProgress,
               },
             },
+            lessonProgress: updatedLessonProgress, // Update cached value
           };
         }),
-      get totalXP() {
-        const state = get();
-        const userId = state.user?.id;
-        if (!userId) return 0;
-        return state.userProgress[userId]?.totalXP || 0;
-      },
+
       addXP: (amount) =>
         set((state) => {
           const userId = state.user?.id;
           if (!userId) {
-            console.warn('No user ID found when adding XP');
+            console.warn('No user ID when adding XP');
             return {};
           }
 
@@ -272,7 +287,7 @@ export const useStore = create<AppState>()(
 
           const newTotalXP = currentUserData.totalXP + amount;
 
-          console.log('Adding XP:', {
+          console.log('addXP:', {
             userId,
             amount,
             previousXP: currentUserData.totalXP,
@@ -287,6 +302,7 @@ export const useStore = create<AppState>()(
                 totalXP: newTotalXP,
               },
             },
+            totalXP: newTotalXP, // Update cached value
           };
         }),
 
@@ -305,7 +321,7 @@ export const useStore = create<AppState>()(
         })),
 
       // UI State
-      showLevelSelector: true, // Show on first load
+      showLevelSelector: true,
       setShowLevelSelector: (show) => set({ showLevelSelector: show }),
     }),
     {
