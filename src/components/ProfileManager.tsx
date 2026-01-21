@@ -23,7 +23,9 @@ export default function ProfileManager() {
       lastActive: new Date(),
     };
 
+    console.log('Creating new profile:', newProfile);
     createProfile(newProfile);
+    console.log('Setting user to new profile');
     setUser(newProfile);
     setShowLevelSelector(false);
   };
