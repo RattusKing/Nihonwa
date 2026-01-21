@@ -257,11 +257,10 @@ export function generateExercises(
   const exercises: Exercise[] = [];
 
   vocabulary.forEach((vocab, index) => {
-    // Mix up exercise types
+    // Mix up exercise types - only multiple choice
     const exerciseTypes: ExerciseType['type'][] = [
       'multiple-choice-jp',
       'multiple-choice-en',
-      'type-answer',
     ];
 
     const type = exerciseTypes[index % exerciseTypes.length];
@@ -293,18 +292,6 @@ export function generateExercises(
           correctAnswer: vocab.word,
           options: japaneseOptions,
           optionsWithDetails,
-        });
-        break;
-
-      case 'type-answer':
-        // Show Japanese, type reading or meaning
-        exercises.push({
-          id: `ex-${vocab.id}-type`,
-          type: 'type-answer',
-          vocab,
-          question: `Type the reading for: ${vocab.word}`,
-          correctAnswer: vocab.reading,
-          hint: `Meaning: ${vocab.meaning}`,
         });
         break;
     }
