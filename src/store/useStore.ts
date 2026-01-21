@@ -10,9 +10,12 @@ interface UserProgressData {
 }
 
 interface AppState {
-  // User
+  // User & Profiles
   user: UserProfile | null;
+  allProfiles: UserProfile[];
   setUser: (user: UserProfile | null) => void;
+  createProfile: (profile: UserProfile) => void;
+  deleteProfile: (profileId: string) => void;
 
   // Progress (scoped by user ID)
   userProgress: Record<string, UserProgressData>;
@@ -99,9 +102,32 @@ const initialProgress: LevelProgress[] = [
 export const useStore = create<AppState>()(
   persist(
     (set, get) => ({
-      // User
+      // User & Profiles
       user: null,
-      setUser: (user) => set({ user }),
+      allProfiles: [],
+      setUser: (user) => {
+        if (user) {
+          // Update lastActive when switching profiles
+          const updatedProfile = { ...user, lastActive: new Date() };
+          set((state) => ({
+            user: updatedProfile,
+            allProfiles: state.allProfiles.map(p =>
+              p.id === user.id ? updatedProfile : p
+            ),
+          }));
+        } else {
+          set({ user });
+        }
+      },
+      createProfile: (profile) =>
+        set((state) => ({
+          allProfiles: [...state.allProfiles, profile],
+        })),
+      deleteProfile: (profileId) =>
+        set((state) => ({
+          allProfiles: state.allProfiles.filter(p => p.id !== profileId),
+          user: state.user?.id === profileId ? null : state.user,
+        })),
 
       // User Progress Storage
       userProgress: {},

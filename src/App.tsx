@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import { useStore } from './store/useStore';
 import { initDB } from './utils/db';
 import Layout from './components/Layout';
-import LevelSelector from './components/LevelSelector';
+import ProfileManager from './components/ProfileManager';
 import Dashboard from './pages/Dashboard';
 import VocabularyNew from './pages/VocabularyNew';
 import Kanji from './pages/Kanji';
@@ -49,7 +49,7 @@ function App() {
   return (
     <>
       {!user || showLevelSelector ? (
-        <LevelSelector />
+        <ProfileManager />
       ) : (
         <Layout>
           <Routes>
