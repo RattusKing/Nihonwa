@@ -4,7 +4,6 @@ import { getVocabularyByLevel } from '../utils/db';
 import { generateExercises } from '../types/lesson';
 import type { Exercise, Lesson } from '../types/lesson';
 import MultipleChoiceExercise from './exercises/MultipleChoiceExercise';
-import TypeAnswerExercise from './exercises/TypeAnswerExercise';
 
 interface LessonFlowProps {
   lesson: Lesson;
@@ -214,17 +213,10 @@ export default function LessonFlow({ lesson, onComplete }: LessonFlowProps) {
       </div>
 
       {/* Current Exercise */}
-      {currentExercise.type === 'multiple-choice-jp' || currentExercise.type === 'multiple-choice-en' ? (
-        <MultipleChoiceExercise
-          exercise={currentExercise}
-          onAnswer={handleAnswer}
-        />
-      ) : currentExercise.type === 'type-answer' ? (
-        <TypeAnswerExercise
-          exercise={currentExercise}
-          onAnswer={handleAnswer}
-        />
-      ) : null}
+      <MultipleChoiceExercise
+        exercise={currentExercise}
+        onAnswer={handleAnswer}
+      />
 
       {/* Score Display */}
       <div className="text-center text-sm text-gray-500">
