@@ -3,7 +3,7 @@ import { JLPT_LEVELS, JLPT_LEVEL_INFO } from '../utils/jlptHelpers';
 import type { JLPTLevel } from '../types';
 
 export default function Settings() {
-  const { user, setUser, appSettings, setAppSettings, setShowLevelSelector } = useStore();
+  const { user, setUser, appSettings, setAppSettings, setShowLevelSelector, deleteProfile, allProfiles } = useStore();
 
   const handleLevelChange = (newLevel: JLPTLevel) => {
     if (user) {
@@ -11,8 +11,15 @@ export default function Settings() {
     }
   };
 
-  const handleResetProgress = () => {
-    if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+  const handleSwitchProfile = () => {
+    setShowLevelSelector(true);
+  };
+
+  const handleDeleteProfile = () => {
+    if (!user) return;
+
+    if (confirm(`Are you sure you want to delete the profile "${user.name}"? This will delete all progress for this profile and cannot be undone.`)) {
+      deleteProfile(user.id);
       setUser(null);
       setShowLevelSelector(true);
     }
@@ -23,6 +30,41 @@ export default function Settings() {
       <div>
         <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2">Settings</h1>
         <p className="text-gray-600 dark:text-gray-400">Customize your learning experience</p>
+      </div>
+
+      {/* Profile Management */}
+      <div className="card">
+        <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">Profile</h2>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between py-3 border-b border-gray-200 dark:border-gray-700">
+            <div>
+              <div className="font-medium text-gray-800 dark:text-gray-100 text-lg">
+                {user?.name}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Currently learning {user?.currentLevel}
+              </div>
+            </div>
+            <span className={`badge-${user?.currentLevel.toLowerCase()}`}>
+              {user?.currentLevel}
+            </span>
+          </div>
+
+          <div className="flex items-center justify-between py-3">
+            <div>
+              <div className="font-medium text-gray-800 dark:text-gray-100">Switch Profile</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                {allProfiles.length} profile{allProfiles.length !== 1 ? 's' : ''} available
+              </div>
+            </div>
+            <button
+              onClick={handleSwitchProfile}
+              className="px-4 py-2 bg-n4 hover:bg-n4-dark text-white font-semibold rounded-lg transition-colors"
+            >
+              Switch
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Current Level */}
@@ -125,18 +167,20 @@ export default function Settings() {
       </div>
 
       {/* Danger Zone */}
-      <div className="card border-2 border-red-200 bg-red-50">
-        <h2 className="text-xl font-bold text-red-800 mb-4">Danger Zone</h2>
+      <div className="card border-2 border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20">
+        <h2 className="text-xl font-bold text-red-800 dark:text-red-400 mb-4">Danger Zone</h2>
         <div className="flex items-center justify-between">
           <div>
-            <div className="font-medium text-red-800">Reset All Progress</div>
-            <div className="text-sm text-red-600">This will delete all your learning data</div>
+            <div className="font-medium text-red-800 dark:text-red-400">Delete Profile</div>
+            <div className="text-sm text-red-600 dark:text-red-500">
+              Permanently delete "{user?.name}" and all its progress
+            </div>
           </div>
           <button
-            onClick={handleResetProgress}
+            onClick={handleDeleteProfile}
             className="px-4 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-colors"
           >
-            Reset Progress
+            Delete Profile
           </button>
         </div>
       </div>

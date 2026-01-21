@@ -1,13 +1,35 @@
 import { Link } from 'react-router-dom';
 import { useStore } from '../store/useStore';
-import { JLPT_LEVEL_INFO } from '../utils/jlptHelpers';
+import { JLPT_LEVEL_INFO, JLPT_LEVELS } from '../utils/jlptHelpers';
+import type { JLPTLevel } from '../types';
 
 export default function Dashboard() {
-  const { user, progress } = useStore();
+  const { user, progress, lessonProgress, totalXP, setUser } = useStore();
 
   if (!user) return null;
 
   const currentProgress = progress.find((p) => p.level === user.currentLevel);
+
+  // Calculate level completion progress
+  const completedLessons = lessonProgress.filter(lp => lp.completed).length;
+  const totalLessons = lessonProgress.length;
+  const completionRate = totalLessons > 0 ? (completedLessons / totalLessons) * 100 : 0;
+
+  // Determine if user can advance to next level
+  // Requirements: 80% of lessons completed AND at least 5000 XP
+  const canAdvance = completionRate >= 80 && totalXP >= 5000;
+  const currentLevelIndex = JLPT_LEVELS.indexOf(user.currentLevel);
+  const nextLevel: JLPTLevel | null = currentLevelIndex < JLPT_LEVELS.length - 1
+    ? JLPT_LEVELS[currentLevelIndex + 1]
+    : null;
+
+  const handleAdvanceLevel = () => {
+    if (!nextLevel || !canAdvance) return;
+
+    if (confirm(`Congratulations! You've completed ${user.currentLevel}. Advance to ${nextLevel}?`)) {
+      setUser({ ...user, currentLevel: nextLevel });
+    }
+  };
 
   const learningModes = [
     {
@@ -44,11 +66,88 @@ export default function Dashboard() {
     <div className="space-y-8">
       {/* Welcome Section */}
       <div className="card bg-gradient-to-r from-n4 to-n4-dark text-white">
-        <h1 className="text-3xl font-bold mb-2">Welcome back to Nihonwa!</h1>
+        <h1 className="text-3xl font-bold mb-2">Welcome back, {user.name}!</h1>
         <p className="text-lg opacity-90">
           Continue your journey to {JLPT_LEVEL_INFO[user.currentLevel].name}
         </p>
       </div>
+
+      {/* Level Advancement Banner */}
+      {canAdvance && nextLevel && (
+        <div className="card bg-gradient-to-r from-green-500 to-emerald-600 text-white border-2 border-green-400 animate-pulse">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-2xl font-bold mb-2">🎉 Ready to Level Up!</div>
+              <p className="text-lg opacity-90 mb-1">
+                You've completed {completedLessons} lessons and earned {totalXP} XP!
+              </p>
+              <p className="opacity-80">
+                Advance from {user.currentLevel} to {nextLevel} and unlock new content!
+              </p>
+            </div>
+            <button
+              onClick={handleAdvanceLevel}
+              className="px-6 py-3 bg-white text-green-600 font-bold rounded-lg hover:bg-gray-100 transition-colors"
+            >
+              Advance to {nextLevel}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Progress Toward Next Level */}
+      {!canAdvance && nextLevel && (
+        <div className="card bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-800">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100">
+                Progress to {nextLevel}
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Complete requirements to advance to the next level
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            {/* Lesson Completion */}
+            <div>
+              <div className="flex justify-between text-sm mb-1">
+                <span className="text-gray-700 dark:text-gray-300">
+                  Lessons Completed (need 80%)
+                </span>
+                <span className={`font-bold ${completionRate >= 80 ? 'text-green-600' : 'text-gray-600 dark:text-gray-400'}`}>
+                  {completedLessons}/{totalLessons} ({Math.round(completionRate)}%)
+                </span>
+              </div>
+              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                <div
+                  className={`h-3 rounded-full transition-all ${completionRate >= 80 ? 'bg-green-500' : 'bg-blue-500'}`}
+                  style={{ width: `${Math.min(completionRate, 100)}%` }}
+                />
+              </div>
+            </div>
+
+            {/* XP Progress */}
+            <div>
+              <div className="flex justify-between text-sm mb-1">
+                <span className="text-gray-700 dark:text-gray-300">
+                  Total XP (need 5,000)
+                </span>
+                <span className={`font-bold ${totalXP >= 5000 ? 'text-green-600' : 'text-gray-600 dark:text-gray-400'}`}>
+                  {totalXP.toLocaleString()} XP
+                </span>
+              </div>
+              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                <div
+                  className={`h-3 rounded-full transition-all ${totalXP >= 5000 ? 'bg-green-500' : 'bg-yellow-500'}`}
+                  style={{ width: `${Math.min((totalXP / 5000) * 100, 100)}%` }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

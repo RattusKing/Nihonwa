@@ -10,6 +10,7 @@ export default function LevelSelector() {
   const handleStart = () => {
     const newUser = {
       id: crypto.randomUUID(),
+      name: 'User', // Default name
       currentLevel: selectedLevel,
       createdAt: new Date(),
       lastActive: new Date(),

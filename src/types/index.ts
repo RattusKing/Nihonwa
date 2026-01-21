@@ -4,6 +4,7 @@ export type JLPTLevel = 'N5' | 'N4' | 'N3' | 'N2' | 'N1';
 // User Profile
 export interface UserProfile {
   id: string;
+  name: string;
   currentLevel: JLPTLevel;
   createdAt: Date;
   lastActive: Date;
