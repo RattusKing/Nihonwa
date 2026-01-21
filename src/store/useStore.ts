@@ -113,21 +113,48 @@ export const useStore = create<AppState>()(
             // Check if profile exists in allProfiles
             const profileExists = state.allProfiles.some(p => p.id === user.id);
 
-            return {
+            console.log('setUser called:', {
+              userId: user.id,
+              userName: user.name,
+              profileExists,
+              currentProfileCount: state.allProfiles.length,
+            });
+
+            const newState = {
               user: updatedProfile,
               allProfiles: profileExists
                 ? state.allProfiles.map(p => p.id === user.id ? updatedProfile : p)
                 : [...state.allProfiles, updatedProfile],
             };
+
+            console.log('New state after setUser:', {
+              profileCount: newState.allProfiles.length,
+              profiles: newState.allProfiles.map(p => ({ id: p.id, name: p.name })),
+            });
+
+            return newState;
           });
         } else {
+          console.log('setUser called with null');
           set({ user });
         }
       },
       createProfile: (profile) =>
-        set((state) => ({
-          allProfiles: [...state.allProfiles, profile],
-        })),
+        set((state) => {
+          console.log('createProfile called:', {
+            profileId: profile.id,
+            profileName: profile.name,
+            currentProfileCount: state.allProfiles.length,
+          });
+
+          const newState = {
+            allProfiles: [...state.allProfiles, profile],
+          };
+
+          console.log('New profile count after createProfile:', newState.allProfiles.length);
+
+          return newState;
+        }),
       deleteProfile: (profileId) =>
         set((state) => ({
           allProfiles: state.allProfiles.filter(p => p.id !== profileId),
@@ -283,6 +310,57 @@ export const useStore = create<AppState>()(
     }),
     {
       name: 'nihonwa-storage',
+      storage: {
+        getItem: (name) => {
+          const str = localStorage.getItem(name);
+          if (!str) return null;
+
+          try {
+            const { state } = JSON.parse(str);
+
+            // Convert date strings back to Date objects for profiles
+            if (state.allProfiles) {
+              state.allProfiles = state.allProfiles.map((profile: any) => ({
+                ...profile,
+                createdAt: profile.createdAt ? new Date(profile.createdAt) : new Date(),
+                lastActive: profile.lastActive ? new Date(profile.lastActive) : new Date(),
+              }));
+            }
+
+            if (state.user) {
+              state.user = {
+                ...state.user,
+                createdAt: state.user.createdAt ? new Date(state.user.createdAt) : new Date(),
+                lastActive: state.user.lastActive ? new Date(state.user.lastActive) : new Date(),
+              };
+            }
+
+            // Convert date strings in lesson progress
+            if (state.userProgress) {
+              Object.keys(state.userProgress).forEach((userId) => {
+                const userData = state.userProgress[userId];
+                if (userData.lessonProgress) {
+                  userData.lessonProgress = userData.lessonProgress.map((lp: any) => ({
+                    ...lp,
+                    completedAt: lp.completedAt ? new Date(lp.completedAt) : undefined,
+                  }));
+                }
+              });
+            }
+
+            return { state };
+          } catch (e) {
+            console.error('Error parsing stored state:', e);
+            return null;
+          }
+        },
+        setItem: (name, value) => {
+          localStorage.setItem(name, JSON.stringify(value));
+        },
+        removeItem: (name) => {
+          localStorage.removeItem(name);
+        },
+      },
     }
   )
 );
