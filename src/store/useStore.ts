@@ -109,12 +109,17 @@ export const useStore = create<AppState>()(
         if (user) {
           // Update lastActive when switching profiles
           const updatedProfile = { ...user, lastActive: new Date() };
-          set((state) => ({
-            user: updatedProfile,
-            allProfiles: state.allProfiles.map(p =>
-              p.id === user.id ? updatedProfile : p
-            ),
-          }));
+          set((state) => {
+            // Check if profile exists in allProfiles
+            const profileExists = state.allProfiles.some(p => p.id === user.id);
+
+            return {
+              user: updatedProfile,
+              allProfiles: profileExists
+                ? state.allProfiles.map(p => p.id === user.id ? updatedProfile : p)
+                : [...state.allProfiles, updatedProfile],
+            };
+          });
         } else {
           set({ user });
         }
@@ -142,12 +147,15 @@ export const useStore = create<AppState>()(
       updateProgress: (level, newProgress) =>
         set((state) => {
           const userId = state.user?.id;
-          if (!userId) return state;
+          if (!userId) {
+            console.warn('No user ID found when updating progress');
+            return {};
+          }
 
           const currentUserData = state.userProgress[userId] || {
             lessonProgress: [],
             totalXP: 0,
-            progress: initialProgress,
+            progress: [...initialProgress],
           };
 
           return {
@@ -173,12 +181,15 @@ export const useStore = create<AppState>()(
       updateLessonProgress: (lessonId, newProgress) =>
         set((state) => {
           const userId = state.user?.id;
-          if (!userId) return state;
+          if (!userId) {
+            console.warn('No user ID found when updating lesson progress');
+            return {};
+          }
 
           const currentUserData = state.userProgress[userId] || {
             lessonProgress: [],
             totalXP: 0,
-            progress: initialProgress,
+            progress: [...initialProgress],
           };
 
           const existing = currentUserData.lessonProgress.find((p) => p.lessonId === lessonId);
@@ -194,6 +205,13 @@ export const useStore = create<AppState>()(
               { lessonId, completed: false, xp: 0, ...newProgress },
             ];
           }
+
+          console.log('Updating lesson progress:', {
+            userId,
+            lessonId,
+            newProgress,
+            updatedLessonProgress,
+          });
 
           return {
             userProgress: {
@@ -214,20 +232,32 @@ export const useStore = create<AppState>()(
       addXP: (amount) =>
         set((state) => {
           const userId = state.user?.id;
-          if (!userId) return state;
+          if (!userId) {
+            console.warn('No user ID found when adding XP');
+            return {};
+          }
 
           const currentUserData = state.userProgress[userId] || {
             lessonProgress: [],
             totalXP: 0,
-            progress: initialProgress,
+            progress: [...initialProgress],
           };
+
+          const newTotalXP = currentUserData.totalXP + amount;
+
+          console.log('Adding XP:', {
+            userId,
+            amount,
+            previousXP: currentUserData.totalXP,
+            newTotalXP,
+          });
 
           return {
             userProgress: {
               ...state.userProgress,
               [userId]: {
                 ...currentUserData,
-                totalXP: currentUserData.totalXP + amount,
+                totalXP: newTotalXP,
               },
             },
           };
