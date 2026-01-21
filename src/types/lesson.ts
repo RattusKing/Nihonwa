@@ -30,6 +30,7 @@ export interface Exercise {
   question: string;
   correctAnswer: string;
   options?: string[]; // For multiple choice
+  optionsWithDetails?: VocabularyItem[]; // For multiple choice with Japanese options
   hint?: string;
 }
 
@@ -280,13 +281,18 @@ export function generateExercises(
 
       case 'multiple-choice-en':
         // Show English, pick Japanese word
+        const japaneseOptions = generateMCOptions(vocab.word, allVocabulary.map(v => v.word));
+        const optionsWithDetails = japaneseOptions.map(option =>
+          allVocabulary.find(v => v.word === option) || vocab
+        );
         exercises.push({
           id: `ex-${vocab.id}-mc-en`,
           type: 'multiple-choice-en',
           vocab,
           question: `How do you say "${vocab.meaning}" in Japanese?`,
           correctAnswer: vocab.word,
-          options: generateMCOptions(vocab.word, allVocabulary.map(v => v.word)),
+          options: japaneseOptions,
+          optionsWithDetails,
         });
         break;
 

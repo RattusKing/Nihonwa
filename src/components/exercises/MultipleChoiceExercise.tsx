@@ -63,6 +63,7 @@ export default function MultipleChoiceExercise({ exercise, onAnswer }: MultipleC
           {exercise.options?.map((option, index) => {
             const isSelected = selected === option;
             const isCorrectOption = option === exercise.correctAnswer;
+            const optionDetails = exercise.optionsWithDetails?.[index];
 
             let bgColor = 'bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 border-gray-300 dark:border-gray-600';
             if (showFeedback && isSelected) {
@@ -82,13 +83,25 @@ export default function MultipleChoiceExercise({ exercise, onAnswer }: MultipleC
                   showFeedback ? 'cursor-default' : 'cursor-pointer'
                 }`}
               >
-                <span className="text-gray-700 dark:text-gray-200">{option}</span>
-                {showFeedback && isCorrectOption && (
-                  <span className="ml-2 text-green-600">✓</span>
-                )}
-                {showFeedback && isSelected && !isCorrect && (
-                  <span className="ml-2 text-red-600">✗</span>
-                )}
+                <div className="flex items-center justify-between">
+                  <div className="flex flex-col">
+                    <span className="text-xl text-gray-800 dark:text-gray-100 font-bold">{option}</span>
+                    {optionDetails && exercise.type === 'multiple-choice-en' && (
+                      <>
+                        <span className="text-sm text-gray-600 dark:text-gray-400 mt-1">{optionDetails.reading}</span>
+                        <span className="text-xs text-gray-500 dark:text-gray-500">({toRomaji(optionDetails.reading)})</span>
+                      </>
+                    )}
+                  </div>
+                  <div>
+                    {showFeedback && isCorrectOption && (
+                      <span className="ml-2 text-green-600 text-xl">✓</span>
+                    )}
+                    {showFeedback && isSelected && !isCorrect && (
+                      <span className="ml-2 text-red-600 text-xl">✗</span>
+                    )}
+                  </div>
+                </div>
               </button>
             );
           })}
