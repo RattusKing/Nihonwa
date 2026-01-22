@@ -28,7 +28,7 @@ let db: IDBPDatabase<NihonwaDB>;
 
 export async function initDB() {
   db = await openDB<NihonwaDB>('nihonwa-db', 2, {
-    upgrade(db, oldVersion, newVersion, transaction) {
+    upgrade(db, oldVersion, _newVersion, transaction) {
       // Version 1: Initial database creation
       if (oldVersion < 1) {
         // Content store
@@ -52,6 +52,7 @@ export async function initDB() {
       }
 
       // Version 2: Clear kanji data to reload with updated categories
+      // NOTE: User profiles are stored in localStorage (not IndexedDB), so they're unaffected
       if (oldVersion >= 1 && oldVersion < 2) {
         const kanjiStore = transaction.objectStore('kanji');
         kanjiStore.clear();
