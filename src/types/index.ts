@@ -66,6 +66,10 @@ export interface KanjiItem {
     onyomi: string[];
     kunyomi: string[];
   };
+  romaji?: {
+    onyomi: string[];
+    kunyomi: string[];
+  };
   level: JLPTLevel;
   strokes: number;
   radicals: string[];
