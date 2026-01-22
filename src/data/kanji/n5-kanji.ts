@@ -1676,23 +1676,6 @@ export const n5Kanji: KanjiItem[] = [
   },
   {
     id: 'n5-kanji-99',
-    character: '万',
-    meaning: 'Ten Thousand',
-    readings: {
-      onyomi: ['マン', 'バン'],
-      kunyomi: ['よろず'],
-    },
-    romaji: {
-      onyomi: ['man', 'ban'],
-      kunyomi: ['yorozu'],
-    },
-    level: 'N5',
-    strokes: 3,
-    radicals: ['一'],
-    mastered: false,
-  },
-  {
-    id: 'n5-kanji-100',
     character: '力',
     meaning: 'Power, Strength',
     readings: {
@@ -1706,6 +1689,23 @@ export const n5Kanji: KanjiItem[] = [
     level: 'N5',
     strokes: 2,
     radicals: ['力'],
+    mastered: false,
+  },
+  {
+    id: 'n5-kanji-100',
+    character: '零',
+    meaning: 'Zero',
+    readings: {
+      onyomi: ['レイ'],
+      kunyomi: ['ぜろ'],
+    },
+    romaji: {
+      onyomi: ['rei'],
+      kunyomi: ['zero'],
+    },
+    level: 'N5',
+    strokes: 13,
+    radicals: ['雨'],
     mastered: false,
   },
 ];
