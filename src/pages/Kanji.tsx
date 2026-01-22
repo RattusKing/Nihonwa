@@ -8,7 +8,7 @@ import { KanjiItem, JLPTLevel } from '../types';
 import { getLevelColor } from '../utils/jlptHelpers';
 
 type StudyMode = 'grid' | 'flashcard' | 'progressive';
-type Category = 'all' | 'numbers' | 'time' | 'people' | 'verbs' | 'adjectives' | 'places' | 'common';
+type Category = 'all' | 'numbers' | 'days' | 'time' | 'people' | 'verbs' | 'adjectives' | 'places' | 'common';
 
 export default function Kanji() {
   const { user } = useStore();
@@ -44,13 +44,14 @@ export default function Kanji() {
 
     const categoryRanges: Record<Category, number[]> = {
       all: [],
-      numbers: [0, 13], // 一 to 万
-      time: [13, 24], // 日 to 半
-      people: [24, 34], // 人 to 学
-      verbs: [34, 50], // 見 to 会
-      adjectives: [50, 62], // 大 to 青
-      places: [62, 81], // 上 to 店
-      common: [81, 100], // 本 to 力
+      numbers: [0, 13], // 一二三四五六七八九十百千万 (1-10, 100, 1000, 10000)
+      days: [13, 20], // 日月火水木金土 (Sun-Sat)
+      time: [20, 24], // 年時分半 (Year, Hour, Minute, Half)
+      people: [24, 34], // 人男女子母父友先生学
+      verbs: [34, 50], // 見行来出入食飲買読書聞話言立休会
+      adjectives: [50, 62], // 大小高安新古長多少白赤青
+      places: [62, 81], // 上下中外前後右左北南東西国京山川駅校店
+      common: [81, 99], // 本名何今毎車電天気手口目耳足雨花円力
     };
 
     const range = categoryRanges[category];
@@ -218,17 +219,18 @@ export default function Kanji() {
 
             {/* Category Filter */}
             <div>
-              <h4 className="font-semibold mb-3">Study by Category</h4>
-              <div className="flex flex-wrap gap-2">
+              <h4 className="font-semibold mb-3 text-gray-800 dark:text-gray-200">Study by Category</h4>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                 {[
-                  { value: 'all', label: 'All Kanji', icon: '全' },
-                  { value: 'numbers', label: 'Numbers', icon: '一二三' },
-                  { value: 'time', label: 'Time & Days', icon: '日月火' },
-                  { value: 'people', label: 'People & Family', icon: '人男女' },
-                  { value: 'verbs', label: 'Action Verbs', icon: '見行来' },
-                  { value: 'adjectives', label: 'Descriptions', icon: '大小高' },
-                  { value: 'places', label: 'Places', icon: '上下中' },
-                  { value: 'common', label: 'Common Words', icon: '本名車' },
+                  { value: 'all', label: 'All Kanji', icon: '全', desc: 'All N5 kanji' },
+                  { value: 'numbers', label: 'Numbers', icon: '一二三', desc: '0-10, 100, 1000, 10000' },
+                  { value: 'days', label: 'Days of Week', icon: '日月火', desc: 'Sunday - Saturday' },
+                  { value: 'time', label: 'Time Words', icon: '年時分', desc: 'Year, hour, minute' },
+                  { value: 'people', label: 'People & Family', icon: '人男女', desc: 'Person, family, student' },
+                  { value: 'verbs', label: 'Action Verbs', icon: '見行来', desc: 'See, go, eat, read' },
+                  { value: 'adjectives', label: 'Descriptions', icon: '大小高', desc: 'Big, small, colors' },
+                  { value: 'places', label: 'Places', icon: '上下中', desc: 'Directions, locations' },
+                  { value: 'common', label: 'Common Words', icon: '本名車', desc: 'Book, name, car' },
                 ].map((cat) => (
                   <button
                     key={cat.value}
@@ -236,13 +238,19 @@ export default function Kanji() {
                       setCategory(cat.value as Category);
                       setCurrentFlashcardIndex(0);
                     }}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                    className={`p-3 rounded-xl text-left transition-all border-2 ${
                       category === cat.value
-                        ? 'bg-blue-600 text-white shadow-md'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        ? 'bg-gradient-to-br from-blue-500 to-purple-600 text-white border-blue-600 shadow-lg scale-105'
+                        : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-md'
                     }`}
                   >
-                    {cat.icon} {cat.label}
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-xl">{cat.icon}</span>
+                      <span className="font-semibold text-sm">{cat.label}</span>
+                    </div>
+                    <div className={`text-xs ${category === cat.value ? 'text-blue-100' : 'text-gray-500 dark:text-gray-400'}`}>
+                      {cat.desc}
+                    </div>
                   </button>
                 ))}
               </div>
@@ -299,39 +307,89 @@ export default function Kanji() {
           </p>
         </div>
       ) : (
-        <div className="card">
+        <>
           {studyMode === 'grid' && (
-            <KanjiStudy kanjiList={filteredKanji} onKanjiClick={(kanji) => console.log(kanji)} />
+            <div className="card">
+              <KanjiStudy kanjiList={filteredKanji} onKanjiClick={(kanji) => console.log(kanji)} />
+            </div>
           )}
 
           {studyMode === 'flashcard' && (
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
+            <div className="space-y-4">
+              {/* Category Info */}
+              <div className="card bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="font-semibold text-gray-800 dark:text-gray-200">
+                      {category === 'all' ? 'All Kanji' :
+                       category === 'numbers' ? 'Numbers (1-10, 100, 1000, 10000)' :
+                       category === 'days' ? 'Days of the Week (日月火水木金土)' :
+                       category === 'time' ? 'Time Words (Year, Hour, Minute, Half)' :
+                       category === 'people' ? 'People & Family' :
+                       category === 'verbs' ? 'Action Verbs' :
+                       category === 'adjectives' ? 'Descriptions & Colors' :
+                       category === 'places' ? 'Places & Directions' :
+                       'Common Words'}
+                    </h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                      {filteredKanji.length} kanji in this category
+                    </p>
+                  </div>
+                  <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+                    {currentFlashcardIndex + 1} / {filteredKanji.length}
+                  </div>
+                </div>
+              </div>
+
+              {/* Navigation */}
+              <div className="flex items-center justify-between gap-4">
                 <button
                   onClick={handlePreviousFlashcard}
-                  className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                  className="flex-1 px-6 py-3 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 rounded-xl hover:from-gray-200 hover:to-gray-300 dark:hover:from-gray-600 dark:hover:to-gray-500 transition-all font-medium shadow-md hover:shadow-lg"
                 >
                   ← Previous
                 </button>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
-                  {currentFlashcardIndex + 1} / {filteredKanji.length}
-                </div>
                 <button
                   onClick={handleNextFlashcard}
-                  className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                  className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl hover:from-blue-600 hover:to-purple-700 transition-all font-medium shadow-md hover:shadow-lg"
                 >
                   Next →
                 </button>
               </div>
 
-              <KanjiFlashcard
-                kanji={filteredKanji[currentFlashcardIndex]}
-                showRomaji={true}
-                onMastered={handleKanjiMastered}
-              />
+              {/* Flashcard */}
+              <div className="card">
+                <KanjiFlashcard
+                  kanji={filteredKanji[currentFlashcardIndex]}
+                  showRomaji={true}
+                  onMastered={handleKanjiMastered}
+                />
+              </div>
+
+              {/* Quick Navigation */}
+              <div className="card">
+                <h4 className="font-semibold mb-3 text-gray-800 dark:text-gray-200">Quick Jump</h4>
+                <div className="flex flex-wrap gap-2">
+                  {filteredKanji.map((kanji, index) => (
+                    <button
+                      key={kanji.id}
+                      onClick={() => setCurrentFlashcardIndex(index)}
+                      className={`w-12 h-12 rounded-lg font-bold transition-all ${
+                        index === currentFlashcardIndex
+                          ? 'bg-gradient-to-br from-blue-500 to-purple-600 text-white shadow-lg scale-110'
+                          : kanji.mastered
+                          ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border-2 border-green-300 dark:border-green-700'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      }`}
+                    >
+                      {kanji.character}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           )}
-        </div>
+        </>
       )}
     </div>
   );
