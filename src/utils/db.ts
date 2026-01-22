@@ -27,26 +27,35 @@ interface NihonwaDB extends DBSchema {
 let db: IDBPDatabase<NihonwaDB>;
 
 export async function initDB() {
-  db = await openDB<NihonwaDB>('nihonwa-db', 1, {
-    upgrade(db) {
-      // Content store
-      const contentStore = db.createObjectStore('content', { keyPath: 'id' });
-      contentStore.createIndex('by-level', 'level');
+  db = await openDB<NihonwaDB>('nihonwa-db', 2, {
+    upgrade(db, oldVersion, newVersion, transaction) {
+      // Version 1: Initial database creation
+      if (oldVersion < 1) {
+        // Content store
+        const contentStore = db.createObjectStore('content', { keyPath: 'id' });
+        contentStore.createIndex('by-level', 'level');
 
-      // Vocabulary store
-      const vocabStore = db.createObjectStore('vocabulary', { keyPath: 'id' });
-      vocabStore.createIndex('by-level', 'level');
-      vocabStore.createIndex('by-mastered', 'mastered');
+        // Vocabulary store
+        const vocabStore = db.createObjectStore('vocabulary', { keyPath: 'id' });
+        vocabStore.createIndex('by-level', 'level');
+        vocabStore.createIndex('by-mastered', 'mastered');
 
-      // Kanji store
-      const kanjiStore = db.createObjectStore('kanji', { keyPath: 'id' });
-      kanjiStore.createIndex('by-level', 'level');
-      kanjiStore.createIndex('by-mastered', 'mastered');
+        // Kanji store
+        const kanjiStore = db.createObjectStore('kanji', { keyPath: 'id' });
+        kanjiStore.createIndex('by-level', 'level');
+        kanjiStore.createIndex('by-mastered', 'mastered');
 
-      // Grammar store
-      const grammarStore = db.createObjectStore('grammar', { keyPath: 'id' });
-      grammarStore.createIndex('by-level', 'level');
-      grammarStore.createIndex('by-mastered', 'mastered');
+        // Grammar store
+        const grammarStore = db.createObjectStore('grammar', { keyPath: 'id' });
+        grammarStore.createIndex('by-level', 'level');
+        grammarStore.createIndex('by-mastered', 'mastered');
+      }
+
+      // Version 2: Clear kanji data to reload with updated categories
+      if (oldVersion >= 1 && oldVersion < 2) {
+        const kanjiStore = transaction.objectStore('kanji');
+        kanjiStore.clear();
+      }
     },
   });
 
