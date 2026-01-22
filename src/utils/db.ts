@@ -27,7 +27,7 @@ interface NihonwaDB extends DBSchema {
 let db: IDBPDatabase<NihonwaDB>;
 
 export async function initDB() {
-  db = await openDB<NihonwaDB>('nihonwa-db', 2, {
+  db = await openDB<NihonwaDB>('nihonwa-db', 3, {
     upgrade(db, oldVersion, _newVersion, transaction) {
       // Version 1: Initial database creation
       if (oldVersion < 1) {
@@ -54,6 +54,12 @@ export async function initDB() {
       // Version 2: Clear kanji data to reload with updated categories
       // NOTE: User profiles are stored in localStorage (not IndexedDB), so they're unaffected
       if (oldVersion >= 1 && oldVersion < 2) {
+        const kanjiStore = transaction.objectStore('kanji');
+        kanjiStore.clear();
+      }
+
+      // Version 3: Clear kanji data again after PWA removal to ensure fresh data
+      if (oldVersion >= 2 && oldVersion < 3) {
         const kanjiStore = transaction.objectStore('kanji');
         kanjiStore.clear();
       }
