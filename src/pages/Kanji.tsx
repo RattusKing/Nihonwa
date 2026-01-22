@@ -44,14 +44,14 @@ export default function Kanji() {
 
     const categoryRanges: Record<Category, number[]> = {
       all: [],
-      numbers: [0, 13], // 一二三四五六七八九十百千万 (1-10, 100, 1000, 10000)
+      numbers: [0, 10], // 一二三四五六七八九十 (1-10 only, basic counting)
       days: [13, 20], // 日月火水木金土 (Sun-Sat)
       time: [20, 24], // 年時分半 (Year, Hour, Minute, Half)
       people: [24, 34], // 人男女子母父友先生学
       verbs: [34, 50], // 見行来出入食飲買読書聞話言立休会
       adjectives: [50, 62], // 大小高安新古長多少白赤青
       places: [62, 81], // 上下中外前後右左北南東西国京山川駅校店
-      common: [81, 99], // 本名何今毎車電天気手口目耳足雨花円力
+      common: [81, 100], // 本名何今毎車電天気手口目耳足雨花円力百千万零
     };
 
     const range = categoryRanges[category];
@@ -223,14 +223,14 @@ export default function Kanji() {
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                 {[
                   { value: 'all', label: 'All Kanji', icon: '全', desc: 'All N5 kanji' },
-                  { value: 'numbers', label: 'Numbers', icon: '一二三', desc: '0-10, 100, 1000, 10000' },
+                  { value: 'numbers', label: 'Numbers', icon: '一二三', desc: '1-10 (basic counting)' },
                   { value: 'days', label: 'Days of Week', icon: '日月火', desc: 'Sunday - Saturday' },
                   { value: 'time', label: 'Time Words', icon: '年時分', desc: 'Year, hour, minute' },
                   { value: 'people', label: 'People & Family', icon: '人男女', desc: 'Person, family, student' },
                   { value: 'verbs', label: 'Action Verbs', icon: '見行来', desc: 'See, go, eat, read' },
                   { value: 'adjectives', label: 'Descriptions', icon: '大小高', desc: 'Big, small, colors' },
                   { value: 'places', label: 'Places', icon: '上下中', desc: 'Directions, locations' },
-                  { value: 'common', label: 'Common Words', icon: '本名車', desc: 'Book, name, car' },
+                  { value: 'common', label: 'Common Words', icon: '本名車', desc: 'Everyday words' },
                 ].map((cat) => (
                   <button
                     key={cat.value}
@@ -322,7 +322,7 @@ export default function Kanji() {
                   <div>
                     <h3 className="font-semibold text-gray-800 dark:text-gray-200">
                       {category === 'all' ? 'All Kanji' :
-                       category === 'numbers' ? 'Numbers (1-10, 100, 1000, 10000)' :
+                       category === 'numbers' ? 'Basic Numbers (1-10)' :
                        category === 'days' ? 'Days of the Week (日月火水木金土)' :
                        category === 'time' ? 'Time Words (Year, Hour, Minute, Half)' :
                        category === 'people' ? 'People & Family' :
