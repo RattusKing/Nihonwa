@@ -1,11 +1,12 @@
 import { KanjiItem } from '../../types';
 
 export const n5Kanji: KanjiItem[] = [
-  // Numbers
+  // Numbers (14 kanji)
   {
     id: 'n5-kanji-1',
     character: '一',
     meaning: 'One',
+    category: 'numbers',
     readings: {
       onyomi: ['イチ', 'イツ'],
       kunyomi: ['ひと', 'ひと(つ)'],
@@ -23,6 +24,7 @@ export const n5Kanji: KanjiItem[] = [
     id: 'n5-kanji-2',
     character: '二',
     meaning: 'Two',
+    category: 'numbers',
     readings: {
       onyomi: ['ニ'],
       kunyomi: ['ふた', 'ふた(つ)'],
@@ -40,6 +42,7 @@ export const n5Kanji: KanjiItem[] = [
     id: 'n5-kanji-3',
     character: '三',
     meaning: 'Three',
+    category: 'numbers',
     readings: {
       onyomi: ['サン'],
       kunyomi: ['み', 'み(つ)', 'みっ(つ)'],
@@ -57,6 +60,7 @@ export const n5Kanji: KanjiItem[] = [
     id: 'n5-kanji-4',
     character: '四',
     meaning: 'Four',
+    category: 'numbers',
     readings: {
       onyomi: ['シ'],
       kunyomi: ['よ', 'よ(つ)', 'よっ(つ)', 'よん'],
@@ -74,6 +78,7 @@ export const n5Kanji: KanjiItem[] = [
     id: 'n5-kanji-5',
     character: '五',
     meaning: 'Five',
+    category: 'numbers',
     readings: {
       onyomi: ['ゴ'],
       kunyomi: ['いつ', 'いつ(つ)'],
@@ -91,6 +96,7 @@ export const n5Kanji: KanjiItem[] = [
     id: 'n5-kanji-6',
     character: '六',
     meaning: 'Six',
+    category: 'numbers',
     readings: {
       onyomi: ['ロク'],
       kunyomi: ['む', 'む(つ)', 'むっ(つ)', 'むい'],
@@ -108,6 +114,7 @@ export const n5Kanji: KanjiItem[] = [
     id: 'n5-kanji-7',
     character: '七',
     meaning: 'Seven',
+    category: 'numbers',
     readings: {
       onyomi: ['シチ'],
       kunyomi: ['なな', 'なな(つ)', 'なの'],
@@ -125,6 +132,7 @@ export const n5Kanji: KanjiItem[] = [
     id: 'n5-kanji-8',
     character: '八',
     meaning: 'Eight',
+    category: 'numbers',
     readings: {
       onyomi: ['ハチ'],
       kunyomi: ['や', 'や(つ)', 'やっ(つ)', 'よう'],
@@ -142,6 +150,7 @@ export const n5Kanji: KanjiItem[] = [
     id: 'n5-kanji-9',
     character: '九',
     meaning: 'Nine',
+    category: 'numbers',
     readings: {
       onyomi: ['キュウ', 'ク'],
       kunyomi: ['ここの', 'ここの(つ)'],
@@ -159,6 +168,7 @@ export const n5Kanji: KanjiItem[] = [
     id: 'n5-kanji-10',
     character: '十',
     meaning: 'Ten',
+    category: 'numbers',
     readings: {
       onyomi: ['ジュウ', 'ジッ'],
       kunyomi: ['とお', 'と'],
@@ -174,8 +184,27 @@ export const n5Kanji: KanjiItem[] = [
   },
   {
     id: 'n5-kanji-11',
+    character: '零',
+    meaning: 'Zero',
+    category: 'numbers',
+    readings: {
+      onyomi: ['レイ'],
+      kunyomi: ['ぜろ'],
+    },
+    romaji: {
+      onyomi: ['rei'],
+      kunyomi: ['zero'],
+    },
+    level: 'N5',
+    strokes: 13,
+    radicals: ['雨'],
+    mastered: false,
+  },
+  {
+    id: 'n5-kanji-12',
     character: '百',
     meaning: 'Hundred',
+    category: 'numbers',
     readings: {
       onyomi: ['ヒャク'],
       kunyomi: ['もも'],
@@ -190,9 +219,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-12',
+    id: 'n5-kanji-13',
     character: '千',
     meaning: 'Thousand',
+    category: 'numbers',
     readings: {
       onyomi: ['セン'],
       kunyomi: ['ち'],
@@ -207,9 +237,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-13',
+    id: 'n5-kanji-14',
     character: '万',
     meaning: 'Ten Thousand',
+    category: 'numbers',
     readings: {
       onyomi: ['マン', 'バン'],
       kunyomi: ['よろず'],
@@ -223,11 +254,12 @@ export const n5Kanji: KanjiItem[] = [
     radicals: ['一'],
     mastered: false,
   },
-  // Time
+  // Days of the week (7 kanji)
   {
-    id: 'n5-kanji-14',
+    id: 'n5-kanji-15',
     character: '日',
-    meaning: 'Day, Sun',
+    meaning: 'Sunday',
+    category: 'days',
     readings: {
       onyomi: ['ニチ', 'ジツ'],
       kunyomi: ['ひ', 'か'],
@@ -242,9 +274,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-15',
+    id: 'n5-kanji-16',
     character: '月',
-    meaning: 'Month, Moon',
+    meaning: 'Monday',
+    category: 'days',
     readings: {
       onyomi: ['ゲツ', 'ガツ'],
       kunyomi: ['つき'],
@@ -259,9 +292,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-16',
+    id: 'n5-kanji-17',
     character: '火',
-    meaning: 'Fire, Tuesday',
+    meaning: 'Tuesday',
+    category: 'days',
     readings: {
       onyomi: ['カ'],
       kunyomi: ['ひ', 'ほ'],
@@ -276,9 +310,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-17',
+    id: 'n5-kanji-18',
     character: '水',
-    meaning: 'Water, Wednesday',
+    meaning: 'Wednesday',
+    category: 'days',
     readings: {
       onyomi: ['スイ'],
       kunyomi: ['みず'],
@@ -293,9 +328,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-18',
+    id: 'n5-kanji-19',
     character: '木',
-    meaning: 'Tree, Thursday',
+    meaning: 'Thursday',
+    category: 'days',
     readings: {
       onyomi: ['モク', 'ボク'],
       kunyomi: ['き', 'こ'],
@@ -310,9 +346,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-19',
+    id: 'n5-kanji-20',
     character: '金',
-    meaning: 'Gold, Money, Friday',
+    meaning: 'Friday',
+    category: 'days',
     readings: {
       onyomi: ['キン', 'コン'],
       kunyomi: ['かね', 'かな'],
@@ -327,9 +364,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-20',
+    id: 'n5-kanji-21',
     character: '土',
-    meaning: 'Earth, Saturday',
+    meaning: 'Saturday',
+    category: 'days',
     readings: {
       onyomi: ['ド', 'ト'],
       kunyomi: ['つち'],
@@ -343,10 +381,12 @@ export const n5Kanji: KanjiItem[] = [
     radicals: ['土'],
     mastered: false,
   },
+  // Time-related (4 kanji)
   {
-    id: 'n5-kanji-21',
+    id: 'n5-kanji-22',
     character: '年',
     meaning: 'Year',
+    category: 'time',
     readings: {
       onyomi: ['ネン'],
       kunyomi: ['とし'],
@@ -361,9 +401,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-22',
+    id: 'n5-kanji-23',
     character: '時',
-    meaning: 'Time, Hour',
+    meaning: 'Time',
+    category: 'time',
     readings: {
       onyomi: ['ジ'],
       kunyomi: ['とき'],
@@ -378,9 +419,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-23',
+    id: 'n5-kanji-24',
     character: '分',
-    meaning: 'Minute, Part',
+    meaning: 'Minute',
+    category: 'time',
     readings: {
       onyomi: ['ブン', 'フン', 'ブ'],
       kunyomi: ['わ(ける)', 'わ(かれる)', 'わ(かる)', 'わ(かつ)'],
@@ -395,9 +437,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-24',
+    id: 'n5-kanji-25',
     character: '半',
     meaning: 'Half',
+    category: 'time',
     readings: {
       onyomi: ['ハン'],
       kunyomi: ['なか(ば)'],
@@ -411,11 +454,12 @@ export const n5Kanji: KanjiItem[] = [
     radicals: ['十', '丶'],
     mastered: false,
   },
-  // People
+  // People (10 kanji)
   {
-    id: 'n5-kanji-25',
+    id: 'n5-kanji-26',
     character: '人',
     meaning: 'Person',
+    category: 'people',
     readings: {
       onyomi: ['ジン', 'ニン'],
       kunyomi: ['ひと'],
@@ -430,9 +474,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-26',
+    id: 'n5-kanji-27',
     character: '男',
-    meaning: 'Man, Male',
+    meaning: 'Man',
+    category: 'people',
     readings: {
       onyomi: ['ダン', 'ナン'],
       kunyomi: ['おとこ'],
@@ -447,9 +492,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-27',
+    id: 'n5-kanji-28',
     character: '女',
-    meaning: 'Woman, Female',
+    meaning: 'Woman',
+    category: 'people',
     readings: {
       onyomi: ['ジョ', 'ニョ'],
       kunyomi: ['おんな', 'め'],
@@ -464,9 +510,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-28',
+    id: 'n5-kanji-29',
     character: '子',
     meaning: 'Child',
+    category: 'people',
     readings: {
       onyomi: ['シ', 'ス'],
       kunyomi: ['こ'],
@@ -481,9 +528,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-29',
+    id: 'n5-kanji-30',
     character: '母',
     meaning: 'Mother',
+    category: 'people',
     readings: {
       onyomi: ['ボ'],
       kunyomi: ['はは'],
@@ -498,9 +546,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-30',
+    id: 'n5-kanji-31',
     character: '父',
     meaning: 'Father',
+    category: 'people',
     readings: {
       onyomi: ['フ'],
       kunyomi: ['ちち'],
@@ -515,9 +564,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-31',
+    id: 'n5-kanji-32',
     character: '友',
     meaning: 'Friend',
+    category: 'people',
     readings: {
       onyomi: ['ユウ'],
       kunyomi: ['とも'],
@@ -532,9 +582,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-32',
+    id: 'n5-kanji-33',
     character: '先',
-    meaning: 'Previous, Before',
+    meaning: 'Previous',
+    category: 'people',
     readings: {
       onyomi: ['セン'],
       kunyomi: ['さき'],
@@ -549,9 +600,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-33',
+    id: 'n5-kanji-34',
     character: '生',
-    meaning: 'Life, Birth',
+    meaning: 'Life',
+    category: 'people',
     readings: {
       onyomi: ['セイ', 'ショウ'],
       kunyomi: ['い(きる)', 'い(かす)', 'う(まれる)', 'なま'],
@@ -566,9 +618,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-34',
+    id: 'n5-kanji-35',
     character: '学',
-    meaning: 'Study, Learning',
+    meaning: 'Study',
+    category: 'people',
     readings: {
       onyomi: ['ガク'],
       kunyomi: ['まな(ぶ)'],
@@ -582,11 +635,12 @@ export const n5Kanji: KanjiItem[] = [
     radicals: ['子'],
     mastered: false,
   },
-  // Basic verbs and actions
+  // Verbs (16 kanji)
   {
-    id: 'n5-kanji-35',
+    id: 'n5-kanji-36',
     character: '見',
-    meaning: 'See, Look',
+    meaning: 'See',
+    category: 'verbs',
     readings: {
       onyomi: ['ケン'],
       kunyomi: ['み(る)', 'み(える)', 'み(せる)'],
@@ -601,9 +655,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-36',
+    id: 'n5-kanji-37',
     character: '行',
     meaning: 'Go',
+    category: 'verbs',
     readings: {
       onyomi: ['コウ', 'ギョウ', 'アン'],
       kunyomi: ['い(く)', 'ゆ(く)', 'おこな(う)'],
@@ -618,9 +673,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-37',
+    id: 'n5-kanji-38',
     character: '来',
     meaning: 'Come',
+    category: 'verbs',
     readings: {
       onyomi: ['ライ'],
       kunyomi: ['く(る)', 'きた(る)', 'きた(す)'],
@@ -635,9 +691,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-38',
+    id: 'n5-kanji-39',
     character: '出',
-    meaning: 'Exit, Leave',
+    meaning: 'Exit',
+    category: 'verbs',
     readings: {
       onyomi: ['シュツ', 'スイ'],
       kunyomi: ['で(る)', 'だ(す)'],
@@ -652,9 +709,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-39',
+    id: 'n5-kanji-40',
     character: '入',
     meaning: 'Enter',
+    category: 'verbs',
     readings: {
       onyomi: ['ニュウ'],
       kunyomi: ['い(る)', 'い(れる)', 'はい(る)'],
@@ -669,9 +727,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-40',
+    id: 'n5-kanji-41',
     character: '食',
-    meaning: 'Eat, Food',
+    meaning: 'Eat',
+    category: 'verbs',
     readings: {
       onyomi: ['ショク', 'ジキ'],
       kunyomi: ['た(べる)', 'く(う)'],
@@ -686,9 +745,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-41',
+    id: 'n5-kanji-42',
     character: '飲',
     meaning: 'Drink',
+    category: 'verbs',
     readings: {
       onyomi: ['イン'],
       kunyomi: ['の(む)'],
@@ -703,9 +763,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-42',
+    id: 'n5-kanji-43',
     character: '買',
     meaning: 'Buy',
+    category: 'verbs',
     readings: {
       onyomi: ['バイ'],
       kunyomi: ['か(う)'],
@@ -720,9 +781,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-43',
+    id: 'n5-kanji-44',
     character: '読',
     meaning: 'Read',
+    category: 'verbs',
     readings: {
       onyomi: ['ドク', 'トク', 'トウ'],
       kunyomi: ['よ(む)'],
@@ -737,9 +799,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-44',
+    id: 'n5-kanji-45',
     character: '書',
     meaning: 'Write',
+    category: 'verbs',
     readings: {
       onyomi: ['ショ'],
       kunyomi: ['か(く)'],
@@ -754,9 +817,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-45',
+    id: 'n5-kanji-46',
     character: '聞',
-    meaning: 'Hear, Ask',
+    meaning: 'Hear',
+    category: 'verbs',
     readings: {
       onyomi: ['ブン', 'モン'],
       kunyomi: ['き(く)', 'き(こえる)'],
@@ -771,9 +835,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-46',
+    id: 'n5-kanji-47',
     character: '話',
-    meaning: 'Talk, Speak',
+    meaning: 'Talk',
+    category: 'verbs',
     readings: {
       onyomi: ['ワ'],
       kunyomi: ['はな(す)', 'はなし'],
@@ -788,9 +853,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-47',
+    id: 'n5-kanji-48',
     character: '言',
-    meaning: 'Say, Word',
+    meaning: 'Say',
+    category: 'verbs',
     readings: {
       onyomi: ['ゲン', 'ゴン'],
       kunyomi: ['い(う)', 'こと'],
@@ -805,9 +871,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-48',
+    id: 'n5-kanji-49',
     character: '立',
     meaning: 'Stand',
+    category: 'verbs',
     readings: {
       onyomi: ['リツ', 'リュウ'],
       kunyomi: ['た(つ)', 'た(てる)'],
@@ -822,9 +889,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-49',
+    id: 'n5-kanji-50',
     character: '休',
     meaning: 'Rest',
+    category: 'verbs',
     readings: {
       onyomi: ['キュウ'],
       kunyomi: ['やす(む)', 'やす(まる)', 'やす(める)'],
@@ -839,9 +907,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-50',
+    id: 'n5-kanji-51',
     character: '会',
     meaning: 'Meet',
+    category: 'verbs',
     readings: {
       onyomi: ['カイ', 'エ'],
       kunyomi: ['あ(う)'],
@@ -855,11 +924,12 @@ export const n5Kanji: KanjiItem[] = [
     radicals: ['人'],
     mastered: false,
   },
-  // Common adjectives and states
+  // Adjectives (12 kanji)
   {
-    id: 'n5-kanji-51',
+    id: 'n5-kanji-52',
     character: '大',
-    meaning: 'Big, Large',
+    meaning: 'Big',
+    category: 'adjectives',
     readings: {
       onyomi: ['ダイ', 'タイ'],
       kunyomi: ['おお(きい)'],
@@ -874,9 +944,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-52',
+    id: 'n5-kanji-53',
     character: '小',
-    meaning: 'Small, Little',
+    meaning: 'Small',
+    category: 'adjectives',
     readings: {
       onyomi: ['ショウ'],
       kunyomi: ['ちい(さい)', 'こ', 'お'],
@@ -891,9 +962,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-53',
+    id: 'n5-kanji-54',
     character: '高',
-    meaning: 'High, Tall, Expensive',
+    meaning: 'High',
+    category: 'adjectives',
     readings: {
       onyomi: ['コウ'],
       kunyomi: ['たか(い)', 'たか(まる)', 'たか(める)'],
@@ -908,9 +980,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-54',
+    id: 'n5-kanji-55',
     character: '安',
-    meaning: 'Cheap, Peaceful',
+    meaning: 'Cheap',
+    category: 'adjectives',
     readings: {
       onyomi: ['アン'],
       kunyomi: ['やす(い)'],
@@ -925,9 +998,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-55',
+    id: 'n5-kanji-56',
     character: '新',
     meaning: 'New',
+    category: 'adjectives',
     readings: {
       onyomi: ['シン'],
       kunyomi: ['あたら(しい)', 'あら(た)', 'にい'],
@@ -942,9 +1016,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-56',
+    id: 'n5-kanji-57',
     character: '古',
     meaning: 'Old',
+    category: 'adjectives',
     readings: {
       onyomi: ['コ'],
       kunyomi: ['ふる(い)', 'ふる(す)'],
@@ -959,9 +1034,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-57',
+    id: 'n5-kanji-58',
     character: '長',
-    meaning: 'Long, Leader',
+    meaning: 'Long',
+    category: 'adjectives',
     readings: {
       onyomi: ['チョウ'],
       kunyomi: ['なが(い)'],
@@ -976,9 +1052,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-58',
+    id: 'n5-kanji-59',
     character: '多',
-    meaning: 'Many, Much',
+    meaning: 'Many',
+    category: 'adjectives',
     readings: {
       onyomi: ['タ'],
       kunyomi: ['おお(い)'],
@@ -993,9 +1070,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-59',
+    id: 'n5-kanji-60',
     character: '少',
-    meaning: 'Few, Little',
+    meaning: 'Few',
+    category: 'adjectives',
     readings: {
       onyomi: ['ショウ'],
       kunyomi: ['すく(ない)', 'すこ(し)'],
@@ -1010,9 +1088,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-60',
+    id: 'n5-kanji-61',
     character: '白',
     meaning: 'White',
+    category: 'adjectives',
     readings: {
       onyomi: ['ハク', 'ビャク'],
       kunyomi: ['しろ', 'しら', 'しろ(い)'],
@@ -1027,9 +1106,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-61',
+    id: 'n5-kanji-62',
     character: '赤',
     meaning: 'Red',
+    category: 'adjectives',
     readings: {
       onyomi: ['セキ', 'シャク'],
       kunyomi: ['あか', 'あか(い)', 'あか(らむ)', 'あか(らめる)'],
@@ -1044,9 +1124,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-62',
+    id: 'n5-kanji-63',
     character: '青',
-    meaning: 'Blue, Green',
+    meaning: 'Blue',
+    category: 'adjectives',
     readings: {
       onyomi: ['セイ', 'ショウ'],
       kunyomi: ['あお', 'あお(い)'],
@@ -1060,11 +1141,12 @@ export const n5Kanji: KanjiItem[] = [
     radicals: ['青'],
     mastered: false,
   },
-  // Places
+  // Places (19 kanji)
   {
-    id: 'n5-kanji-63',
+    id: 'n5-kanji-64',
     character: '上',
-    meaning: 'Above, Up',
+    meaning: 'Above',
+    category: 'places',
     readings: {
       onyomi: ['ジョウ', 'ショウ'],
       kunyomi: ['うえ', 'うわ', 'かみ', 'あ(げる)', 'あ(がる)', 'のぼ(る)'],
@@ -1079,9 +1161,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-64',
+    id: 'n5-kanji-65',
     character: '下',
-    meaning: 'Below, Down',
+    meaning: 'Below',
+    category: 'places',
     readings: {
       onyomi: ['カ', 'ゲ'],
       kunyomi: ['した', 'しも', 'もと', 'さ(げる)', 'さ(がる)', 'くだ(る)', 'お(りる)'],
@@ -1096,9 +1179,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-65',
+    id: 'n5-kanji-66',
     character: '中',
-    meaning: 'Middle, Inside',
+    meaning: 'Middle',
+    category: 'places',
     readings: {
       onyomi: ['チュウ'],
       kunyomi: ['なか', 'うち'],
@@ -1113,9 +1197,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-66',
+    id: 'n5-kanji-67',
     character: '外',
     meaning: 'Outside',
+    category: 'places',
     readings: {
       onyomi: ['ガイ', 'ゲ'],
       kunyomi: ['そと', 'ほか', 'はず(す)', 'はず(れる)'],
@@ -1130,9 +1215,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-67',
+    id: 'n5-kanji-68',
     character: '前',
-    meaning: 'Front, Before',
+    meaning: 'Front',
+    category: 'places',
     readings: {
       onyomi: ['ゼン'],
       kunyomi: ['まえ'],
@@ -1147,9 +1233,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-68',
+    id: 'n5-kanji-69',
     character: '後',
-    meaning: 'Behind, After',
+    meaning: 'Behind',
+    category: 'places',
     readings: {
       onyomi: ['ゴ', 'コウ'],
       kunyomi: ['あと', 'うし(ろ)', 'のち', 'おく(れる)'],
@@ -1164,9 +1251,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-69',
+    id: 'n5-kanji-70',
     character: '右',
     meaning: 'Right',
+    category: 'places',
     readings: {
       onyomi: ['ウ', 'ユウ'],
       kunyomi: ['みぎ'],
@@ -1181,9 +1269,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-70',
+    id: 'n5-kanji-71',
     character: '左',
     meaning: 'Left',
+    category: 'places',
     readings: {
       onyomi: ['サ'],
       kunyomi: ['ひだり'],
@@ -1198,9 +1287,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-71',
+    id: 'n5-kanji-72',
     character: '北',
     meaning: 'North',
+    category: 'places',
     readings: {
       onyomi: ['ホク'],
       kunyomi: ['きた'],
@@ -1215,9 +1305,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-72',
+    id: 'n5-kanji-73',
     character: '南',
     meaning: 'South',
+    category: 'places',
     readings: {
       onyomi: ['ナン', 'ナ'],
       kunyomi: ['みなみ'],
@@ -1232,9 +1323,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-73',
+    id: 'n5-kanji-74',
     character: '東',
     meaning: 'East',
+    category: 'places',
     readings: {
       onyomi: ['トウ'],
       kunyomi: ['ひがし'],
@@ -1249,9 +1341,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-74',
+    id: 'n5-kanji-75',
     character: '西',
     meaning: 'West',
+    category: 'places',
     readings: {
       onyomi: ['セイ', 'サイ'],
       kunyomi: ['にし'],
@@ -1266,9 +1359,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-75',
+    id: 'n5-kanji-76',
     character: '国',
     meaning: 'Country',
+    category: 'places',
     readings: {
       onyomi: ['コク'],
       kunyomi: ['くに'],
@@ -1283,9 +1377,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-76',
+    id: 'n5-kanji-77',
     character: '京',
     meaning: 'Capital',
+    category: 'places',
     readings: {
       onyomi: ['キョウ', 'ケイ'],
       kunyomi: ['みやこ'],
@@ -1300,9 +1395,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-77',
+    id: 'n5-kanji-78',
     character: '山',
     meaning: 'Mountain',
+    category: 'places',
     readings: {
       onyomi: ['サン'],
       kunyomi: ['やま'],
@@ -1317,9 +1413,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-78',
+    id: 'n5-kanji-79',
     character: '川',
     meaning: 'River',
+    category: 'places',
     readings: {
       onyomi: ['セン'],
       kunyomi: ['かわ'],
@@ -1334,9 +1431,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-79',
+    id: 'n5-kanji-80',
     character: '駅',
     meaning: 'Station',
+    category: 'places',
     readings: {
       onyomi: ['エキ'],
       kunyomi: [],
@@ -1351,9 +1449,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-80',
+    id: 'n5-kanji-81',
     character: '校',
     meaning: 'School',
+    category: 'places',
     readings: {
       onyomi: ['コウ'],
       kunyomi: [],
@@ -1368,9 +1467,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-81',
+    id: 'n5-kanji-82',
     character: '店',
-    meaning: 'Shop, Store',
+    meaning: 'Shop',
+    category: 'places',
     readings: {
       onyomi: ['テン'],
       kunyomi: ['みせ'],
@@ -1384,11 +1484,12 @@ export const n5Kanji: KanjiItem[] = [
     radicals: ['广'],
     mastered: false,
   },
-  // Essential verbs and concepts
+  // Common (18 kanji)
   {
-    id: 'n5-kanji-82',
+    id: 'n5-kanji-83',
     character: '本',
-    meaning: 'Book, Origin',
+    meaning: 'Book',
+    category: 'common',
     readings: {
       onyomi: ['ホン'],
       kunyomi: ['もと'],
@@ -1403,9 +1504,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-83',
+    id: 'n5-kanji-84',
     character: '名',
     meaning: 'Name',
+    category: 'common',
     readings: {
       onyomi: ['メイ', 'ミョウ'],
       kunyomi: ['な'],
@@ -1420,9 +1522,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-84',
+    id: 'n5-kanji-85',
     character: '何',
     meaning: 'What',
+    category: 'common',
     readings: {
       onyomi: ['カ'],
       kunyomi: ['なに', 'なん'],
@@ -1437,9 +1540,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-85',
+    id: 'n5-kanji-86',
     character: '今',
     meaning: 'Now',
+    category: 'common',
     readings: {
       onyomi: ['コン', 'キン'],
       kunyomi: ['いま'],
@@ -1454,9 +1558,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-86',
+    id: 'n5-kanji-87',
     character: '毎',
     meaning: 'Every',
+    category: 'common',
     readings: {
       onyomi: ['マイ'],
       kunyomi: ['ごと'],
@@ -1471,9 +1576,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-87',
+    id: 'n5-kanji-88',
     character: '車',
-    meaning: 'Car, Vehicle',
+    meaning: 'Car',
+    category: 'common',
     readings: {
       onyomi: ['シャ'],
       kunyomi: ['くるま'],
@@ -1488,9 +1594,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-88',
+    id: 'n5-kanji-89',
     character: '電',
     meaning: 'Electricity',
+    category: 'common',
     readings: {
       onyomi: ['デン'],
       kunyomi: [],
@@ -1505,9 +1612,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-89',
+    id: 'n5-kanji-90',
     character: '天',
-    meaning: 'Heaven, Sky',
+    meaning: 'Heaven',
+    category: 'common',
     readings: {
       onyomi: ['テン'],
       kunyomi: ['あめ', 'あま'],
@@ -1522,9 +1630,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-90',
+    id: 'n5-kanji-91',
     character: '気',
-    meaning: 'Spirit, Energy',
+    meaning: 'Spirit',
+    category: 'common',
     readings: {
       onyomi: ['キ', 'ケ'],
       kunyomi: [],
@@ -1539,9 +1648,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-91',
+    id: 'n5-kanji-92',
     character: '手',
     meaning: 'Hand',
+    category: 'common',
     readings: {
       onyomi: ['シュ'],
       kunyomi: ['て', 'た'],
@@ -1556,9 +1666,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-92',
+    id: 'n5-kanji-93',
     character: '口',
     meaning: 'Mouth',
+    category: 'common',
     readings: {
       onyomi: ['コウ', 'ク'],
       kunyomi: ['くち'],
@@ -1573,9 +1684,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-93',
+    id: 'n5-kanji-94',
     character: '目',
     meaning: 'Eye',
+    category: 'common',
     readings: {
       onyomi: ['モク', 'ボク'],
       kunyomi: ['め', 'ま'],
@@ -1590,9 +1702,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-94',
+    id: 'n5-kanji-95',
     character: '耳',
     meaning: 'Ear',
+    category: 'common',
     readings: {
       onyomi: ['ジ'],
       kunyomi: ['みみ'],
@@ -1607,9 +1720,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-95',
+    id: 'n5-kanji-96',
     character: '足',
-    meaning: 'Foot, Leg',
+    meaning: 'Foot',
+    category: 'common',
     readings: {
       onyomi: ['ソク'],
       kunyomi: ['あし', 'た(りる)', 'た(す)'],
@@ -1624,9 +1738,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-96',
+    id: 'n5-kanji-97',
     character: '雨',
     meaning: 'Rain',
+    category: 'common',
     readings: {
       onyomi: ['ウ'],
       kunyomi: ['あめ', 'あま'],
@@ -1641,9 +1756,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-97',
+    id: 'n5-kanji-98',
     character: '花',
     meaning: 'Flower',
+    category: 'common',
     readings: {
       onyomi: ['カ', 'ケ'],
       kunyomi: ['はな'],
@@ -1658,9 +1774,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-98',
+    id: 'n5-kanji-99',
     character: '円',
-    meaning: 'Yen, Circle',
+    meaning: 'Yen',
+    category: 'common',
     readings: {
       onyomi: ['エン'],
       kunyomi: ['まる(い)'],
@@ -1675,9 +1792,10 @@ export const n5Kanji: KanjiItem[] = [
     mastered: false,
   },
   {
-    id: 'n5-kanji-99',
+    id: 'n5-kanji-100',
     character: '力',
-    meaning: 'Power, Strength',
+    meaning: 'Power',
+    category: 'common',
     readings: {
       onyomi: ['リョク', 'リキ'],
       kunyomi: ['ちから'],
@@ -1689,23 +1807,6 @@ export const n5Kanji: KanjiItem[] = [
     level: 'N5',
     strokes: 2,
     radicals: ['力'],
-    mastered: false,
-  },
-  {
-    id: 'n5-kanji-100',
-    character: '零',
-    meaning: 'Zero',
-    readings: {
-      onyomi: ['レイ'],
-      kunyomi: ['ぜろ'],
-    },
-    romaji: {
-      onyomi: ['rei'],
-      kunyomi: ['zero'],
-    },
-    level: 'N5',
-    strokes: 13,
-    radicals: ['雨'],
     mastered: false,
   },
 ];
