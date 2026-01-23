@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useStore } from '../store/useStore';
 import { JLPT_LEVEL_INFO, JLPT_LEVELS } from '../utils/jlptHelpers';
+import { JLPT_REQUIREMENTS, getSectionName, getSectionMaxScore } from '../utils/jlptScoring';
 import type { JLPTLevel } from '../types';
 
 export default function Dashboard() {
@@ -145,6 +146,117 @@ export default function Dashboard() {
                 />
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* JLPT Score Overview */}
+      {currentProgress?.estimatedJLPTScore && (
+        <div className="card bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-800">Your Estimated JLPT {user.currentLevel} Score</h2>
+              <p className="text-sm text-gray-600 mt-1">
+                Based on your completed lessons and performance
+              </p>
+            </div>
+            <span className={`px-4 py-2 rounded-full text-lg font-bold ${
+              currentProgress.estimatedJLPTScore.passed
+                ? 'bg-green-500 text-white'
+                : 'bg-orange-500 text-white'
+            }`}>
+              {currentProgress.estimatedJLPTScore.passed ? '✓ PASS LEVEL' : 'IN PROGRESS'}
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Total Score */}
+            <div className="bg-white rounded-xl p-6 shadow-sm">
+              <div className="text-center">
+                <div className="text-sm text-gray-600 mb-2">Total Score</div>
+                <div className="text-6xl font-bold text-blue-600 mb-2">
+                  {currentProgress.estimatedJLPTScore.total}
+                  <span className="text-2xl text-gray-400">/180</span>
+                </div>
+                <div className="text-sm text-gray-600">
+                  Pass mark: {JLPT_REQUIREMENTS[user.currentLevel].totalPassMark}/180
+                </div>
+                {!currentProgress.estimatedJLPTScore.passed && (
+                  <div className="mt-2 text-sm font-semibold text-orange-600">
+                    {JLPT_REQUIREMENTS[user.currentLevel].totalPassMark - currentProgress.estimatedJLPTScore.total} points needed to pass
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Section Breakdown */}
+            <div className="bg-white rounded-xl p-6 shadow-sm">
+              <div className="text-sm font-bold text-gray-700 mb-3">Section Scores</div>
+              <div className="space-y-3">
+                {/* Language Knowledge */}
+                <div>
+                  <div className="flex justify-between text-sm mb-1">
+                    <span className="text-gray-600">
+                      {getSectionName('languageKnowledge', user.currentLevel)}
+                    </span>
+                    <span className="font-bold text-gray-800">
+                      {currentProgress.estimatedJLPTScore.languageKnowledge}/{getSectionMaxScore('languageKnowledge', user.currentLevel)}
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-n5 h-2 rounded-full"
+                      style={{
+                        width: `${(currentProgress.estimatedJLPTScore.languageKnowledge / getSectionMaxScore('languageKnowledge', user.currentLevel)) * 100}%`
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Reading (N1-N3 only) */}
+                {JLPT_REQUIREMENTS[user.currentLevel].hasSeparateReading && (
+                  <div>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="text-gray-600">Reading</span>
+                      <span className="font-bold text-gray-800">
+                        {currentProgress.estimatedJLPTScore.reading}/60
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div
+                        className="bg-n3 h-2 rounded-full"
+                        style={{ width: `${(currentProgress.estimatedJLPTScore.reading / 60) * 100}%` }}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {/* Listening */}
+                <div>
+                  <div className="flex justify-between text-sm mb-1">
+                    <span className="text-gray-600">Listening</span>
+                    <span className="font-bold text-gray-400">
+                      {currentProgress.estimatedJLPTScore.listening}/60 (No lessons yet)
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-gray-400 h-2 rounded-full"
+                      style={{ width: `${(currentProgress.estimatedJLPTScore.listening / 60) * 100}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4 text-center">
+            <Link
+              to="/progress"
+              className="text-blue-600 hover:text-blue-800 font-semibold text-sm"
+            >
+              View Detailed Progress →
+            </Link>
           </div>
         </div>
       )}

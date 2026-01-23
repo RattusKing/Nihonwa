@@ -1,5 +1,6 @@
 import { useStore } from '../store/useStore';
 import { JLPT_LEVELS, JLPT_LEVEL_INFO } from '../utils/jlptHelpers';
+import { JLPT_REQUIREMENTS, getSectionName, getSectionMaxScore } from '../utils/jlptScoring';
 
 export default function Progress() {
   const { user, progress } = useStore();
@@ -114,6 +115,75 @@ export default function Progress() {
                     </div>
                   </div>
                 </div>
+
+                {/* JLPT Score Estimation */}
+                {levelProgress?.estimatedJLPTScore && (
+                  <div className="mt-4 pt-4 border-t border-gray-200">
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="text-sm font-bold text-gray-700">Estimated JLPT Score</h4>
+                      <span className={`px-3 py-1 rounded-full text-sm font-bold ${
+                        levelProgress.estimatedJLPTScore.passed
+                          ? 'bg-green-100 text-green-700'
+                          : 'bg-orange-100 text-orange-700'
+                      }`}>
+                        {levelProgress.estimatedJLPTScore.passed ? '✓ PASS' : 'BELOW PASS'}
+                      </span>
+                    </div>
+
+                    {/* Total Score */}
+                    <div className="bg-gradient-to-r from-n4-light to-n4 text-white rounded-lg p-4 mb-3">
+                      <div className="text-center">
+                        <div className="text-sm opacity-90 mb-1">Total Score</div>
+                        <div className="text-4xl font-bold">
+                          {levelProgress.estimatedJLPTScore.total}
+                          <span className="text-xl opacity-80">/180</span>
+                        </div>
+                        <div className="text-sm opacity-90 mt-1">
+                          Pass mark: {JLPT_REQUIREMENTS[level].totalPassMark}/180
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Section Scores */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                      {/* Language Knowledge */}
+                      <div className="bg-gray-50 rounded p-3">
+                        <div className="text-xs text-gray-600 mb-1">
+                          {getSectionName('languageKnowledge', level)}
+                        </div>
+                        <div className="text-2xl font-bold text-gray-800">
+                          {levelProgress.estimatedJLPTScore.languageKnowledge}
+                          <span className="text-sm text-gray-600">
+                            /{getSectionMaxScore('languageKnowledge', level)}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Reading (N1-N3 only) */}
+                      {JLPT_REQUIREMENTS[level].hasSeparateReading && (
+                        <div className="bg-gray-50 rounded p-3">
+                          <div className="text-xs text-gray-600 mb-1">Reading</div>
+                          <div className="text-2xl font-bold text-gray-800">
+                            {levelProgress.estimatedJLPTScore.reading}
+                            <span className="text-sm text-gray-600">/60</span>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Listening */}
+                      <div className="bg-gray-50 rounded p-3">
+                        <div className="text-xs text-gray-600 mb-1">Listening</div>
+                        <div className="text-2xl font-bold text-gray-800">
+                          {levelProgress.estimatedJLPTScore.listening}
+                          <span className="text-sm text-gray-600">/60</span>
+                        </div>
+                        <div className="text-xs text-gray-500 mt-1">
+                          No lessons yet
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {/* Stats */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 pt-4 border-t border-gray-200">
