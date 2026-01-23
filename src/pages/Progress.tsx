@@ -136,16 +136,19 @@ export default function Progress() {
                         <div className="text-sm opacity-90 mb-1">Total Score</div>
                         <div className="text-4xl font-bold">
                           {levelProgress.estimatedJLPTScore.total}
-                          <span className="text-xl opacity-80">/180</span>
+                          <span className="text-xl opacity-80">/120</span>
                         </div>
                         <div className="text-sm opacity-90 mt-1">
-                          Pass mark: {JLPT_REQUIREMENTS[level].totalPassMark}/180
+                          Pass mark: {JLPT_REQUIREMENTS[level].totalPassMark}/120
+                        </div>
+                        <div className="text-xs opacity-75 mt-1">
+                          (Listening section not included)
                         </div>
                       </div>
                     </div>
 
                     {/* Section Scores */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                       {/* Language Knowledge */}
                       <div className="bg-gray-50 rounded p-3">
                         <div className="text-xs text-gray-600 mb-1">
@@ -169,18 +172,6 @@ export default function Progress() {
                           </div>
                         </div>
                       )}
-
-                      {/* Listening */}
-                      <div className="bg-gray-50 rounded p-3">
-                        <div className="text-xs text-gray-600 mb-1">Listening</div>
-                        <div className="text-2xl font-bold text-gray-800">
-                          {levelProgress.estimatedJLPTScore.listening}
-                          <span className="text-sm text-gray-600">/60</span>
-                        </div>
-                        <div className="text-xs text-gray-500 mt-1">
-                          No lessons yet
-                        </div>
-                      </div>
                     </div>
                   </div>
                 )}

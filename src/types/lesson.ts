@@ -14,8 +14,8 @@ export interface LessonProgress {
   lessonId: string;
   completed: boolean;
   completedAt?: Date;
-  // JLPT-style scoring
-  sectionType: 'languageKnowledge' | 'reading' | 'listening';
+  // JLPT-style scoring (without listening)
+  sectionType: 'languageKnowledge' | 'reading';
   sectionScore: number; // Scaled score (0-60 or 0-120 for N4-N5 combined)
   correctAnswers: number;
   totalQuestions: number;

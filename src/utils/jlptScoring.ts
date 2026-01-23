@@ -1,19 +1,21 @@
 import type { JLPTLevel } from '../types';
 
 /**
- * Official JLPT Scoring System
- * Based on JLPT Foundation standards
+ * JLPT Scoring System (without Listening section)
+ * Adapted from JLPT Foundation standards
  * Source: https://www.jlpt.jp/e/about/levelsummary.html
+ *
+ * Note: Listening section removed as it's not implemented yet.
+ * Scores are adjusted proportionally from the official 3-section format.
  */
 
 export interface JLPTSectionScores {
   languageKnowledge: number; // 0-60 (N1-N3) or 0-120 (N4-N5, combined with reading)
   reading: number; // 0-60 (N1-N3 only, included in languageKnowledge for N4-N5)
-  listening: number; // 0-60 (all levels)
 }
 
 export interface JLPTScore {
-  total: number; // 0-180
+  total: number; // 0-120 (without listening)
   sections: JLPTSectionScores;
   passed: boolean;
   sectionsPassed: boolean; // All sections meet minimum
@@ -23,7 +25,6 @@ export interface JLPTScore {
     sectionsStatus: {
       languageKnowledge: boolean;
       reading: boolean;
-      listening: boolean;
     };
   };
 }
@@ -35,31 +36,32 @@ export interface JLPTRequirements {
 }
 
 /**
- * Official JLPT passing requirements by level
+ * JLPT passing requirements by level (without listening section)
+ * Adjusted proportionally from official JLPT standards
  */
 export const JLPT_REQUIREMENTS: Record<JLPTLevel, JLPTRequirements> = {
   N5: {
-    totalPassMark: 80,
-    sectionMinimum: 19, // Applied as 38/120 for combined section, 19/60 for listening
+    totalPassMark: 53, // Originally 80/180, adjusted to 53/120
+    sectionMinimum: 19, // Applied as 38/120 for combined section
     hasSeparateReading: false,
   },
   N4: {
-    totalPassMark: 90,
+    totalPassMark: 60, // Originally 90/180, adjusted to 60/120
     sectionMinimum: 19,
     hasSeparateReading: false,
   },
   N3: {
-    totalPassMark: 95,
+    totalPassMark: 63, // Originally 95/180, adjusted to 63/120
     sectionMinimum: 19,
     hasSeparateReading: true,
   },
   N2: {
-    totalPassMark: 90,
+    totalPassMark: 60, // Originally 90/180, adjusted to 60/120
     sectionMinimum: 19,
     hasSeparateReading: true,
   },
   N1: {
-    totalPassMark: 100,
+    totalPassMark: 67, // Originally 100/180, adjusted to 67/120
     sectionMinimum: 19,
     hasSeparateReading: true,
   },
@@ -94,7 +96,7 @@ export function percentageToScaledScore(
 export function calculateLessonScore(
   correctAnswers: number,
   totalQuestions: number,
-  sectionType: 'languageKnowledge' | 'reading' | 'listening',
+  sectionType: 'languageKnowledge' | 'reading',
   level: JLPTLevel
 ): number {
   const percentage = (correctAnswers / totalQuestions) * 100;
@@ -111,11 +113,11 @@ export function calculateLessonScore(
 
 /**
  * Calculate estimated JLPT score from multiple lesson performances
- * Uses average of all lessons per section
+ * Uses average of all lessons per section (without listening)
  */
 export function calculateEstimatedJLPTScore(
   lessonScores: {
-    sectionType: 'languageKnowledge' | 'reading' | 'listening';
+    sectionType: 'languageKnowledge' | 'reading';
     score: number;
   }[],
   level: JLPTLevel
@@ -126,7 +128,6 @@ export function calculateEstimatedJLPTScore(
   const sectionGroups = {
     languageKnowledge: lessonScores.filter(l => l.sectionType === 'languageKnowledge'),
     reading: lessonScores.filter(l => l.sectionType === 'reading'),
-    listening: lessonScores.filter(l => l.sectionType === 'listening'),
   };
 
   // Calculate average score per section
@@ -144,20 +145,12 @@ export function calculateEstimatedJLPTScore(
       )
     : 0;
 
-  const avgListening = sectionGroups.listening.length > 0
-    ? Math.round(
-        sectionGroups.listening.reduce((sum, l) => sum + l.score, 0) /
-        sectionGroups.listening.length
-      )
-    : 0;
-
   const sections: JLPTSectionScores = {
     languageKnowledge: avgLanguageKnowledge,
     reading: avgReading,
-    listening: avgListening,
   };
 
-  const total = avgLanguageKnowledge + avgReading + avgListening;
+  const total = avgLanguageKnowledge + avgReading;
 
   // Check pass/fail conditions
   const sectionsStatus = {
@@ -167,7 +160,6 @@ export function calculateEstimatedJLPTScore(
     reading: requirements.hasSeparateReading
       ? avgReading >= requirements.sectionMinimum
       : true, // N4-N5 don't have separate reading
-    listening: avgListening >= requirements.sectionMinimum,
   };
 
   const sectionsPassed = Object.values(sectionsStatus).every(passed => passed);
@@ -190,7 +182,7 @@ export function calculateEstimatedJLPTScore(
  * Get section name display text
  */
 export function getSectionName(
-  sectionType: 'languageKnowledge' | 'reading' | 'listening',
+  sectionType: 'languageKnowledge' | 'reading',
   level: JLPTLevel
 ): string {
   const requirements = JLPT_REQUIREMENTS[level];
@@ -201,18 +193,14 @@ export function getSectionName(
       : 'Language Knowledge (Vocabulary/Grammar/Reading)';
   }
 
-  if (sectionType === 'reading') {
-    return 'Reading';
-  }
-
-  return 'Listening';
+  return 'Reading';
 }
 
 /**
  * Get max score for a section
  */
 export function getSectionMaxScore(
-  sectionType: 'languageKnowledge' | 'reading' | 'listening',
+  sectionType: 'languageKnowledge' | 'reading',
   level: JLPTLevel
 ): number {
   const requirements = JLPT_REQUIREMENTS[level];
@@ -228,7 +216,7 @@ export function getSectionMaxScore(
  * Get minimum passing score for a section
  */
 export function getSectionMinimum(
-  sectionType: 'languageKnowledge' | 'reading' | 'listening',
+  sectionType: 'languageKnowledge' | 'reading',
   level: JLPTLevel
 ): number {
   const requirements = JLPT_REQUIREMENTS[level];
