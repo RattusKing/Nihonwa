@@ -42,22 +42,7 @@ export default function Kanji() {
   const getFilteredKanji = (): KanjiItem[] => {
     if (category === 'all') return kanjiList;
 
-    const categoryRanges: Record<Category, number[]> = {
-      all: [],
-      numbers: [0, 10], // 一二三四五六七八九十 (1-10 only, basic counting)
-      days: [13, 20], // 日月火水木金土 (Sun-Sat)
-      time: [20, 24], // 年時分半 (Year, Hour, Minute, Half)
-      people: [24, 34], // 人男女子母父友先生学
-      verbs: [34, 50], // 見行来出入食飲買読書聞話言立休会
-      adjectives: [50, 62], // 大小高安新古長多少白赤青
-      places: [62, 81], // 上下中外前後右左北南東西国京山川駅校店
-      common: [81, 100], // 本名何今毎車電天気手口目耳足雨花円力百千万零
-    };
-
-    const range = categoryRanges[category];
-    if (!range || range.length === 0) return kanjiList;
-
-    return kanjiList.slice(range[0], range[1]);
+    return kanjiList.filter((kanji) => kanji.category === category);
   };
 
   const handleKanjiMastered = async (kanjiId: string) => {

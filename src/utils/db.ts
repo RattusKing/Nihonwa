@@ -27,7 +27,7 @@ interface NihonwaDB extends DBSchema {
 let db: IDBPDatabase<NihonwaDB>;
 
 export async function initDB() {
-  db = await openDB<NihonwaDB>('nihonwa-db', 3, {
+  db = await openDB<NihonwaDB>('nihonwa-db', 4, {
     upgrade(db, oldVersion, _newVersion, transaction) {
       // Version 1: Initial database creation
       if (oldVersion < 1) {
@@ -60,6 +60,12 @@ export async function initDB() {
 
       // Version 3: Clear kanji data again after PWA removal to ensure fresh data
       if (oldVersion >= 2 && oldVersion < 3) {
+        const kanjiStore = transaction.objectStore('kanji');
+        kanjiStore.clear();
+      }
+
+      // Version 4: Clear kanji data to reload with proper category field and fixed meanings
+      if (oldVersion >= 3 && oldVersion < 4) {
         const kanjiStore = transaction.objectStore('kanji');
         kanjiStore.clear();
       }

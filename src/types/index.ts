@@ -58,10 +58,13 @@ export interface VocabularyItem {
 }
 
 // Kanji
+export type KanjiCategory = 'numbers' | 'days' | 'time' | 'people' | 'verbs' | 'adjectives' | 'places' | 'common';
+
 export interface KanjiItem {
   id: string;
   character: string;
   meaning: string;
+  category: KanjiCategory;
   readings: {
     onyomi: string[];
     kunyomi: string[];
