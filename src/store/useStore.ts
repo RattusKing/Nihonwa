@@ -326,7 +326,6 @@ export const useStore = create<AppState>()(
                     total: jlptScore.total,
                     languageKnowledge: jlptScore.sections.languageKnowledge,
                     reading: jlptScore.sections.reading,
-                    listening: jlptScore.sections.listening,
                     passed: jlptScore.passed,
                     lastUpdated: new Date(),
                   },

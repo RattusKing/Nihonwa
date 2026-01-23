@@ -230,22 +230,6 @@ export default function Dashboard() {
                     </div>
                   </div>
                 )}
-
-                {/* Listening */}
-                <div>
-                  <div className="flex justify-between text-sm mb-1">
-                    <span className="text-gray-600">Listening</span>
-                    <span className="font-bold text-gray-400">
-                      {currentProgress.estimatedJLPTScore.listening}/60 (No lessons yet)
-                    </span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div
-                      className="bg-gray-400 h-2 rounded-full"
-                      style={{ width: `${(currentProgress.estimatedJLPTScore.listening / 60) * 100}%` }}
-                    />
-                  </div>
-                </div>
               </div>
             </div>
           </div>

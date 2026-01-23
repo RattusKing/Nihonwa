@@ -169,18 +169,6 @@ export default function Progress() {
                           </div>
                         </div>
                       )}
-
-                      {/* Listening */}
-                      <div className="bg-gray-50 rounded p-3">
-                        <div className="text-xs text-gray-600 mb-1">Listening</div>
-                        <div className="text-2xl font-bold text-gray-800">
-                          {levelProgress.estimatedJLPTScore.listening}
-                          <span className="text-sm text-gray-600">/60</span>
-                        </div>
-                        <div className="text-xs text-gray-500 mt-1">
-                          No lessons yet
-                        </div>
-                      </div>
                     </div>
                   </div>
                 )}
