@@ -5,6 +5,7 @@ import { generateExercises } from '../types/lesson';
 import type { Exercise, Lesson } from '../types/lesson';
 import MultipleChoiceExercise from './exercises/MultipleChoiceExercise';
 import { calculateLessonScore, JLPT_REQUIREMENTS } from '../utils/jlptScoring';
+import { JLPT_LEVEL_INFO } from '../utils/jlptHelpers';
 
 interface LessonFlowProps {
   lesson: Lesson;
@@ -12,7 +13,7 @@ interface LessonFlowProps {
 }
 
 export default function LessonFlow({ lesson, onComplete }: LessonFlowProps) {
-  const { updateLessonProgress, recalculateJLPTScore } = useStore();
+  const { updateLessonProgress, recalculateJLPTScore, updateProgress, progress: levelProgress, lessonProgress } = useStore();
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState({ correct: 0, total: 0 });
@@ -84,6 +85,10 @@ export default function LessonFlow({ lesson, onComplete }: LessonFlowProps) {
     // Determine if passed (meets minimum for section)
     const passed = sectionScore >= sectionMinimum;
 
+    // Check if this lesson was already completed
+    const previousProgress = lessonProgress.find(lp => lp.lessonId === lesson.id);
+    const wasAlreadyCompleted = previousProgress?.completed || false;
+
     // Update lesson progress with JLPT scoring
     updateLessonProgress(lesson.id, {
       lessonId: lesson.id,
@@ -97,6 +102,30 @@ export default function LessonFlow({ lesson, onComplete }: LessonFlowProps) {
       score: Math.round((correctAnswers / totalQuestions) * 100),
       xp: Math.round((correctAnswers / totalQuestions) * 1000),
     });
+
+    // Update level progress if lesson was passed for the first time
+    if (passed && !wasAlreadyCompleted) {
+      const currentProgress = levelProgress.find(p => p.level === lesson.level);
+      const levelInfo = JLPT_LEVEL_INFO[lesson.level];
+
+      // Calculate new mastered count
+      const vocabInLesson = lesson.vocabularyIds.length;
+      const newVocabularyMastered = (currentProgress?.vocabularyMastered || 0) + vocabInLesson;
+
+      // Calculate vocabulary skill percentage
+      const vocabPercentage = Math.min(100, Math.round((newVocabularyMastered / levelInfo.vocabulary) * 100));
+
+      // Update progress with new vocabulary count and percentage
+      updateProgress(lesson.level, {
+        vocabularyMastered: newVocabularyMastered,
+        skills: {
+          vocabulary: vocabPercentage,
+          kanji: currentProgress?.skills.kanji || 0,
+          grammar: currentProgress?.skills.grammar || 0,
+          reading: currentProgress?.skills.reading || 0,
+        },
+      });
+    }
 
     // Recalculate estimated JLPT score for this level
     recalculateJLPTScore(lesson.level);
