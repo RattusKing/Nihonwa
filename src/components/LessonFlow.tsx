@@ -4,6 +4,7 @@ import { getVocabularyByLevel } from '../utils/db';
 import { generateExercises } from '../types/lesson';
 import type { Exercise, Lesson } from '../types/lesson';
 import MultipleChoiceExercise from './exercises/MultipleChoiceExercise';
+import { calculateLessonScore, JLPT_REQUIREMENTS } from '../utils/jlptScoring';
 
 interface LessonFlowProps {
   lesson: Lesson;
@@ -11,7 +12,7 @@ interface LessonFlowProps {
 }
 
 export default function LessonFlow({ lesson, onComplete }: LessonFlowProps) {
-  const { addXP, updateLessonProgress } = useStore();
+  const { updateLessonProgress, recalculateJLPTScore } = useStore();
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState({ correct: 0, total: 0 });
@@ -58,21 +59,47 @@ export default function LessonFlow({ lesson, onComplete }: LessonFlowProps) {
   const showLessonResults = () => {
     setShowResults(true);
 
-    // Calculate XP based on score
-    const percentage = ((score.correct + 1) / (score.total + 1)) * 100; // +1 for last question
-    const xp = Math.round(percentage * 10); // Max 1000 XP per lesson
+    // Calculate JLPT-style score
+    const correctAnswers = score.correct + 1; // +1 for last question
+    const totalQuestions = score.total + 1;
 
-    // Add XP
-    addXP(xp);
+    // For now, all lessons are vocabulary/grammar (Language Knowledge section)
+    // TODO: Add reading and listening lessons later
+    const sectionType = 'languageKnowledge';
 
-    // Update lesson progress
+    // Calculate scaled JLPT score for this lesson
+    const sectionScore = calculateLessonScore(
+      correctAnswers,
+      totalQuestions,
+      sectionType,
+      lesson.level
+    );
+
+    // Get requirements for this level
+    const requirements = JLPT_REQUIREMENTS[lesson.level];
+    const sectionMinimum = !requirements.hasSeparateReading
+      ? requirements.sectionMinimum * 2 // N4-N5: 38/120
+      : requirements.sectionMinimum; // N1-N3: 19/60
+
+    // Determine if passed (meets minimum for section)
+    const passed = sectionScore >= sectionMinimum;
+
+    // Update lesson progress with JLPT scoring
     updateLessonProgress(lesson.id, {
       lessonId: lesson.id,
-      completed: percentage >= 70, // 70% pass rate
-      xp,
+      completed: passed,
+      sectionType,
+      sectionScore,
+      correctAnswers,
+      totalQuestions,
       completedAt: new Date(),
-      score: Math.round(percentage),
+      // Keep old fields for backwards compatibility
+      score: Math.round((correctAnswers / totalQuestions) * 100),
+      xp: Math.round((correctAnswers / totalQuestions) * 1000),
     });
+
+    // Recalculate estimated JLPT score for this level
+    recalculateJLPTScore(lesson.level);
   };
 
   const handleContinue = () => {
@@ -106,9 +133,27 @@ export default function LessonFlow({ lesson, onComplete }: LessonFlowProps) {
 
   // Results Screen
   if (showResults) {
-    const finalScore = ((score.correct + 1) / (score.total + 1)) * 100;
-    const passed = finalScore >= 70;
-    const xp = Math.round(finalScore * 10);
+    const correctAnswers = score.correct + 1;
+    const totalQuestions = score.total + 1;
+    const percentage = (correctAnswers / totalQuestions) * 100;
+
+    // Calculate JLPT score
+    const sectionType = 'languageKnowledge';
+    const sectionScore = calculateLessonScore(
+      correctAnswers,
+      totalQuestions,
+      sectionType,
+      lesson.level
+    );
+
+    // Get requirements
+    const requirements = JLPT_REQUIREMENTS[lesson.level];
+    const sectionMaxScore = !requirements.hasSeparateReading ? 120 : 60;
+    const sectionMinimum = !requirements.hasSeparateReading
+      ? requirements.sectionMinimum * 2
+      : requirements.sectionMinimum;
+
+    const passed = sectionScore >= sectionMinimum;
 
     return (
       <div className="max-w-2xl mx-auto">
@@ -126,33 +171,50 @@ export default function LessonFlow({ lesson, onComplete }: LessonFlowProps) {
             {lesson.title}
           </div>
 
-          {/* Score */}
+          {/* JLPT Score */}
           <div className="bg-gradient-to-r from-n4-light to-n4 text-white rounded-xl p-8 mb-6">
-            <div className="text-6xl font-bold mb-2">
-              {Math.round(finalScore)}%
+            <div className="text-sm uppercase tracking-wide mb-2 opacity-90">
+              JLPT {lesson.level} - Language Knowledge
             </div>
-            <div className="text-xl">
-              {score.correct + 1} / {score.total + 1} correct
+            <div className="text-6xl font-bold mb-2">
+              {sectionScore}<span className="text-3xl">/{sectionMaxScore}</span>
+            </div>
+            <div className="text-xl mb-3">
+              {correctAnswers} / {totalQuestions} correct ({Math.round(percentage)}%)
+            </div>
+            <div className="text-sm opacity-90">
+              Minimum to pass: {sectionMinimum}/{sectionMaxScore}
             </div>
           </div>
 
-          {/* XP Earned */}
-          <div className="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-6 mb-6">
-            <div className="text-3xl font-bold text-yellow-700 mb-1">
-              +{xp} XP
+          {/* Pass/Fail Status */}
+          <div className={`border-2 rounded-lg p-6 mb-6 ${
+            passed
+              ? 'bg-green-50 border-green-300'
+              : 'bg-orange-50 border-orange-300'
+          }`}>
+            <div className={`text-3xl font-bold mb-1 ${
+              passed ? 'text-green-700' : 'text-orange-700'
+            }`}>
+              {passed ? '✓ PASSED' : '✗ BELOW MINIMUM'}
             </div>
-            <div className="text-yellow-600">Experience Points Earned</div>
+            <div className={passed ? 'text-green-600' : 'text-orange-600'}>
+              {passed
+                ? 'Your score meets JLPT standards for this section'
+                : `You need ${sectionMinimum - sectionScore} more points to meet the minimum`
+              }
+            </div>
           </div>
 
           {/* Message */}
           <div className="mb-8 text-gray-700">
             {passed ? (
               <p>
-                Great job! You've mastered this lesson. Keep up the momentum!
+                Excellent work! Your performance meets JLPT standards. Keep building your skills!
               </p>
             ) : (
               <p>
-                You got {Math.round(finalScore)}%. Try to get 70% or higher to pass. Don't give up!
+                Keep practicing! Focus on understanding the material deeply to improve your score.
               </p>
             )}
           </div>

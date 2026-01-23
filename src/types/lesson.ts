@@ -13,8 +13,14 @@ export interface Lesson {
 export interface LessonProgress {
   lessonId: string;
   completed: boolean;
-  xp: number;
   completedAt?: Date;
+  // JLPT-style scoring
+  sectionType: 'languageKnowledge' | 'reading' | 'listening';
+  sectionScore: number; // Scaled score (0-60 or 0-120 for N4-N5 combined)
+  correctAnswers: number;
+  totalQuestions: number;
+  // Deprecated fields (kept for backwards compatibility)
+  xp?: number;
   score?: number; // Percentage correct
 }
 

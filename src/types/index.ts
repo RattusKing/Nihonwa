@@ -25,6 +25,15 @@ export interface LevelProgress {
   kanjiMastered: number;
   grammarPatternsMastered: number;
   articlesRead: number;
+  // JLPT Score Estimation
+  estimatedJLPTScore?: {
+    total: number; // 0-180
+    languageKnowledge: number; // 0-60 or 0-120
+    reading: number; // 0-60 or 0 for N4-N5
+    listening: number; // 0-60
+    passed: boolean;
+    lastUpdated: Date;
+  };
 }
 
 // Content Types

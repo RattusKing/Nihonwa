@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { UserProfile, LevelProgress, JLPTLevel, DifficultySettings, AppSettings } from '../types';
 import type { LessonProgress } from '../types/lesson';
+import { calculateEstimatedJLPTScore } from '../utils/jlptScoring';
 
 interface UserProgressData {
   lessonProgress: LessonProgress[];
@@ -30,6 +31,7 @@ interface AppState {
   updateLessonProgress: (lessonId: string, progress: Partial<LessonProgress>) => void;
   addXP: (amount: number) => void;
   syncCurrentUserProgress: () => void;
+  recalculateJLPTScore: (level: JLPTLevel) => void;
 
   // Difficulty Settings
   difficultySettings: DifficultySettings;
@@ -248,7 +250,16 @@ export const useStore = create<AppState>()(
           } else {
             updatedLessonProgress = [
               ...currentUserData.lessonProgress,
-              { lessonId, completed: false, xp: 0, ...newProgress },
+              {
+                lessonId,
+                completed: false,
+                sectionType: 'languageKnowledge',
+                sectionScore: 0,
+                correctAnswers: 0,
+                totalQuestions: 0,
+                xp: 0,
+                ...newProgress
+              },
             ];
           }
 
@@ -268,6 +279,78 @@ export const useStore = create<AppState>()(
               },
             },
             lessonProgress: updatedLessonProgress, // Update cached value
+          };
+        }),
+
+      recalculateJLPTScore: (level) =>
+        set((state) => {
+          const userId = state.user?.id;
+          if (!userId) {
+            console.warn('No user ID when recalculating JLPT score');
+            return {};
+          }
+
+          const currentUserData = state.userProgress[userId] || {
+            lessonProgress: [],
+            totalXP: 0,
+            progress: [...initialProgress],
+          };
+
+          // Filter lessons for this level that have been completed
+          const levelLessons = currentUserData.lessonProgress.filter((lp) => {
+            // Extract level from lessonId (e.g., "n5-lesson-1" -> "N5")
+            const lessonLevel = lp.lessonId.split('-')[0].toUpperCase() as JLPTLevel;
+            return lessonLevel === level && lp.completed && lp.sectionScore !== undefined;
+          });
+
+          if (levelLessons.length === 0) {
+            // No completed lessons, no score to calculate
+            return {};
+          }
+
+          // Prepare lesson scores for calculation
+          const lessonScores = levelLessons.map((lp) => ({
+            sectionType: lp.sectionType || 'languageKnowledge',
+            score: lp.sectionScore || 0,
+          }));
+
+          // Calculate estimated JLPT score
+          const jlptScore = calculateEstimatedJLPTScore(lessonScores, level);
+
+          // Update progress for this level
+          const updatedProgress = currentUserData.progress.map((p) =>
+            p.level === level
+              ? {
+                  ...p,
+                  estimatedJLPTScore: {
+                    total: jlptScore.total,
+                    languageKnowledge: jlptScore.sections.languageKnowledge,
+                    reading: jlptScore.sections.reading,
+                    listening: jlptScore.sections.listening,
+                    passed: jlptScore.passed,
+                    lastUpdated: new Date(),
+                  },
+                }
+              : p
+          );
+
+          console.log('recalculateJLPTScore:', {
+            userId,
+            level,
+            lessonCount: levelLessons.length,
+            estimatedScore: jlptScore.total,
+            passed: jlptScore.passed,
+          });
+
+          return {
+            userProgress: {
+              ...state.userProgress,
+              [userId]: {
+                ...currentUserData,
+                progress: updatedProgress,
+              },
+            },
+            progress: updatedProgress, // Update cached value
           };
         }),
 
