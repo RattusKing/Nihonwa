@@ -172,7 +172,7 @@ export default function VocabularyNew() {
                 )}
 
                 {/* XP Display */}
-                {progress && progress.xp > 0 && (
+                {progress && progress.xp && progress.xp > 0 && (
                   <div className="mt-2 text-xs text-yellow-600">
                     +{progress.xp} XP earned
                   </div>

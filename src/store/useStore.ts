@@ -253,13 +253,13 @@ export const useStore = create<AppState>()(
               {
                 lessonId,
                 completed: false,
-                sectionType: 'languageKnowledge',
+                sectionType: 'languageKnowledge' as const,
                 sectionScore: 0,
                 correctAnswers: 0,
                 totalQuestions: 0,
                 xp: 0,
                 ...newProgress
-              },
+              } as LessonProgress,
             ];
           }
 
