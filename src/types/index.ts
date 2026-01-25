@@ -90,6 +90,18 @@ export interface KanjiItem {
 }
 
 // Grammar
+export interface GrammarExercise {
+  id: string;
+  sentence: string; // Sentence with blank marked as ___
+  sentenceReading: string; // Reading for the sentence
+  options: Array<{
+    text: string;
+    reading: string;
+  }>;
+  correctAnswer: number; // Index of correct option
+  explanation?: string;
+}
+
 export interface GrammarPattern {
   id: string;
   pattern: string;
@@ -100,6 +112,7 @@ export interface GrammarPattern {
     japanese: string;
     english: string;
   }[];
+  exercises: GrammarExercise[];
   mastered: boolean;
 }
 

@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import { useStore } from '../store/useStore';
 import { n5ReadingPassages, type ReadingPassage } from '../data/reading/n5-reading';
 import { toRomaji } from '../utils/romaji';
+import ReadingFlow from '../components/ReadingFlow';
 
 export default function Reading() {
   const { user } = useStore();
   const [passages, setPassages] = useState<ReadingPassage[]>([]);
   const [selectedPassage, setSelectedPassage] = useState<ReadingPassage | null>(null);
   const [showTranslation, setShowTranslation] = useState(false);
+  const [inPracticeMode, setInPracticeMode] = useState(false);
 
   useEffect(() => {
     // Load reading passages based on user level
@@ -20,7 +22,32 @@ export default function Reading() {
   const handlePassageSelect = (passage: ReadingPassage) => {
     setSelectedPassage(passage);
     setShowTranslation(false);
+    setInPracticeMode(false);
   };
+
+  const handleStartPractice = () => {
+    setInPracticeMode(true);
+  };
+
+  const handlePracticeComplete = () => {
+    setInPracticeMode(false);
+    setSelectedPassage(null);
+  };
+
+  // If in practice mode, show the ReadingFlow component
+  if (selectedPassage && inPracticeMode) {
+    return (
+      <div className="space-y-6">
+        <button
+          onClick={() => setInPracticeMode(false)}
+          className="text-n4 hover:text-n4-dark font-medium flex items-center gap-2"
+        >
+          ← Back to Reading
+        </button>
+        <ReadingFlow passage={selectedPassage} onComplete={handlePracticeComplete} />
+      </div>
+    );
+  }
 
   if (selectedPassage) {
     return (
@@ -107,6 +134,24 @@ export default function Reading() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Practice Button */}
+        <div className="card bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-xl font-bold mb-1">Ready to Test Your Comprehension?</h3>
+              <p className="text-blue-100">
+                Answer {selectedPassage.comprehensionQuestions.length} questions about this passage
+              </p>
+            </div>
+            <button
+              onClick={handleStartPractice}
+              className="bg-white text-blue-600 px-6 py-3 rounded-lg font-bold hover:bg-blue-50 transition-colors"
+            >
+              Start Practice →
+            </button>
           </div>
         </div>
       </div>

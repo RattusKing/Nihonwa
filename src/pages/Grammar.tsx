@@ -3,11 +3,13 @@ import { useStore } from '../store/useStore';
 import { n5GrammarPatterns } from '../data/grammar/n5-grammar';
 import { toRomaji } from '../utils/romaji';
 import type { GrammarPattern } from '../types';
+import GrammarPracticeFlow from '../components/GrammarPracticeFlow';
 
 export default function Grammar() {
   const { user } = useStore();
   const [patterns, setPatterns] = useState<GrammarPattern[]>([]);
   const [selectedPattern, setSelectedPattern] = useState<GrammarPattern | null>(null);
+  const [inPracticeMode, setInPracticeMode] = useState(false);
 
   useEffect(() => {
     // Load grammar patterns based on user level
@@ -16,6 +18,30 @@ export default function Grammar() {
     }
     // Add more levels as data becomes available
   }, [user]);
+
+  const handleStartPractice = () => {
+    setInPracticeMode(true);
+  };
+
+  const handlePracticeComplete = () => {
+    setInPracticeMode(false);
+    setSelectedPattern(null);
+  };
+
+  // If in practice mode, show the GrammarPracticeFlow component
+  if (selectedPattern && inPracticeMode) {
+    return (
+      <div className="space-y-6">
+        <button
+          onClick={() => setInPracticeMode(false)}
+          className="text-n4 hover:text-n4-dark font-medium flex items-center gap-2"
+        >
+          ← Back to Pattern
+        </button>
+        <GrammarPracticeFlow pattern={selectedPattern} onComplete={handlePracticeComplete} />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -115,13 +141,19 @@ export default function Grammar() {
                 </div>
               </div>
 
-              {/* Close Button */}
-              <div className="mt-6 flex justify-end">
+              {/* Action Buttons */}
+              <div className="mt-6 flex gap-3 justify-end">
                 <button
                   onClick={() => setSelectedPattern(null)}
-                  className="btn-primary"
+                  className="btn-secondary"
                 >
                   Close
+                </button>
+                <button
+                  onClick={handleStartPractice}
+                  className="btn-primary"
+                >
+                  Practice ({selectedPattern.exercises.length} exercises) →
                 </button>
               </div>
             </div>
